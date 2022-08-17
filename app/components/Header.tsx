@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useLocation } from "@remix-run/react";
+import { Link, useLocation, useTransition } from "@remix-run/react";
 import clsx from "clsx";
 import {
   Menu,
@@ -10,7 +10,9 @@ import {
   useMenuButtonContext,
 } from "@reach/menu-button";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useSpinDelay } from "spin-delay";
 import { Logo } from "~/components/Logo";
+import { Spinner } from "~/components/Spinner";
 
 const links = [
   { name: "Home", to: "/" },
@@ -107,12 +109,20 @@ function MobileMenu() {
 }
 
 export function Header() {
+  const transition = useTransition();
+  const showSpinner = useSpinDelay(transition.state !== "idle", {
+    delay: 200,
+    minDuration: 300,
+  });
   return (
     <header className="absolute z-40 flex w-full justify-center px-10 py-6 text-paragraph">
       <div className="flex w-full max-w-screen-xl items-center justify-between">
-        <Link to="/" tabIndex={-1} aria-hidden="true">
-          <Logo />
-        </Link>
+        <div className="flex items-center gap-5">
+          <Link to="/" tabIndex={-1} aria-hidden="true">
+            <Logo />
+          </Link>
+          {showSpinner && <Spinner />}
+        </div>
         <nav>
           <ul className="hidden gap-5 text-lg lg:flex">
             {links.map((link) => (

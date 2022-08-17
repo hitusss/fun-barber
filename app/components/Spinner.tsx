@@ -1,6 +1,8 @@
-export function Spinner() {
+import * as React from "react";
+
+export function Spinner(props: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div role="status">
+    <div {...props} role="status" aria-label="loading">
       <svg
         aria-hidden="true"
         className="mr-2 h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"

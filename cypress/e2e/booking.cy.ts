@@ -27,6 +27,7 @@ describe("booking tests", () => {
     cy.validateInputErrorByLabel(/email/i, ".a", /invalid email/i);
     cy.validateInputErrorByLabel(/email/i, "b", /invalid email/i, false);
   });
+
   it("should allow booking with correct data", () => {
     cy.visitAndCheck("/booking");
     cy.findByLabelText(/first name/i).type("John");
@@ -39,4 +40,17 @@ describe("booking tests", () => {
       "be.visible"
     );
   });
+  // it("should allow booking with correct data and date from next month", () => {
+  //   cy.visitAndCheck("/booking");
+  //   cy.findByLabelText(/next month/i).click();
+  //   cy.findByLabelText(/first name/i).type("John");
+  //   cy.findByLabelText(/last name/i).type("Doe");
+  //   cy.findByLabelText(/email/i).type("john@doe.com");
+  //   cy.findByLabelText(/phone/i).type("123456789");
+  //   cy.findByRole("button", { name: /book/i }).click();
+  //   cy.findByText(/booking successful/i).should("be.visible");
+  //   cy.findByRole("link", { name: /book another appointment/i }).should(
+  //     "be.visible"
+  //   );
+  // });
 });

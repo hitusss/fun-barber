@@ -1,3 +1,4 @@
+import moment from "moment";
 import { prisma } from "~/utils/db.server";
 import { startEndMonth } from "~/utils";
 
@@ -32,7 +33,9 @@ export async function createBooking({
   email,
   barber,
   service,
-  dateString,
+  year,
+  month,
+  day,
   hour,
 }: {
   firstName?: string;
@@ -41,7 +44,9 @@ export async function createBooking({
   email?: string;
   barber?: string;
   service?: string;
-  dateString?: string;
+  year?: string;
+  month?: string;
+  day?: string;
   hour?: string;
 }) {
   if (
@@ -51,14 +56,22 @@ export async function createBooking({
     !email ||
     !barber ||
     !service ||
-    !dateString ||
+    !day ||
+    !month ||
+    !year ||
     !hour
   ) {
     throw new Error("Please fill all fields!");
   }
 
-  const date = new Date(dateString);
-  date.setUTCHours(0, 0, 0, 0);
+  const date = moment({
+    year: Number(year),
+    month: Number(month) - 1,
+    day: Number(day),
+    hour: 0,
+    minute: 0,
+    second: 0,
+  }).toDate();
 
   const isBooked = await prisma.booking.findMany({
     where: {

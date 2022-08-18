@@ -1,5 +1,11 @@
 import * as React from "react";
-import { useLoaderData, useFetcher, Link } from "@remix-run/react";
+import type { ShouldReloadFunction } from "@remix-run/react";
+import {
+  useLoaderData,
+  useFetcher,
+  Link,
+  useSearchParams,
+} from "@remix-run/react";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
@@ -7,13 +13,14 @@ import { z } from "zod";
 import { makeDomainFunction } from "remix-domains";
 import { performMutation, Form } from "remix-forms";
 import type { Service, Barber } from "~/types";
-import { BookingCalendar } from "~/components/BookingCalendar";
+import BookingCalendar from "~/routes/resource/bookingCalendar";
 import { Select } from "~/components/Select";
 import { Input } from "~/components/Input";
 import { Button } from "~/components/Button";
 import { Error } from "~/components/Error";
 import { contentful } from "~/utils/contentful.server";
 import { createBooking } from "~/models/booking.server";
+import { getAllSearchParams } from "~/utils";
 
 type LoaderData = {
   barbers: Pick<Barber, "name">[];
@@ -23,8 +30,10 @@ type LoaderData = {
 const bookingSchema = z.object({
   barber: z.string(),
   service: z.string(),
-  dateString: z.string(),
-  hour: z.string(),
+  year: z.string().optional(),
+  month: z.string().optional(),
+  day: z.string().optional(),
+  hour: z.string().optional(),
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email(),
@@ -72,13 +81,18 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function Booking() {
-  const fetcher = useFetcher();
+  const bookingFetcher = useFetcher();
   const { barbers, services } = useLoaderData<LoaderData>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const reducedMotion = useReducedMotion();
-  const [barber, setBarber] = React.useState(barbers[0].name);
   const successRef = React.useRef<HTMLHeadingElement>(null);
 
-  const isSuccess = fetcher?.data?.ok;
+  const barber = searchParams.get("barber") || barbers[0].name;
+  const service =
+    searchParams.get("service") ||
+    `${services[0].name} (${services[0].price}$)`;
+
+  const isSuccess = bookingFetcher?.data?.ok;
 
   const duration = reducedMotion ? 0 : 0.5;
   const variants = {
@@ -104,6 +118,11 @@ export default function Booking() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center justify-center">
+      <noscript>
+        <Error className="text-3xl">
+          You need to enable JavaScript to use this website.
+        </Error>
+      </noscript>
       <AnimatePresence>
         <motion.div
           key="bookingForm"
@@ -116,7 +135,7 @@ export default function Booking() {
         >
           <Form
             schema={bookingSchema}
-            fetcher={fetcher}
+            fetcher={bookingFetcher}
             errorComponent={Error}
             method="post"
             className="flex flex-col items-center gap-4"
@@ -130,7 +149,13 @@ export default function Booking() {
                         <Select
                           {...register("barber")}
                           options={barbers.map(({ name }) => name)}
-                          onChange={(e) => setBarber(e.target.value)}
+                          defaultValue={barber}
+                          onChange={(e) =>
+                            setSearchParams({
+                              ...getAllSearchParams(searchParams),
+                              barber: e.target.value,
+                            })
+                          }
                           label="Barber"
                         />
                         <Errors />
@@ -145,6 +170,13 @@ export default function Booking() {
                           options={services.map(
                             ({ name, price }) => `${name} (${price}$)`
                           )}
+                          defaultValue={service}
+                          onChange={(e) =>
+                            setSearchParams({
+                              ...getAllSearchParams(searchParams),
+                              service: e.target.value,
+                            })
+                          }
                           label="Service"
                         />
                         <Errors />
@@ -153,9 +185,7 @@ export default function Booking() {
                   </Field>
                 </fieldset>
 
-                <BookingCalendar barber={barber} register={register} />
-                <Field name="dateString">{({ Errors }) => <Errors />}</Field>
-                <Field name="hour">{({ Errors }) => <Errors />}</Field>
+                <BookingCalendar barber={barber} />
 
                 <fieldset className="grid w-4/5 grid-cols-1 rounded-lg bg-white/5 p-10 md:grid-cols-2 md:gap-8">
                   <Field name="firstName">
@@ -204,9 +234,9 @@ export default function Booking() {
                 <Button
                   className="my-4 px-16"
                   type="submit"
-                  disabled={Boolean(fetcher.submission)}
+                  disabled={Boolean(bookingFetcher.submission)}
                 >
-                  {fetcher.submission ? "Booking..." : "Book"}
+                  {bookingFetcher.submission ? "Booking..." : "Book"}
                 </Button>
               </>
             )}
@@ -239,3 +269,5 @@ export default function Booking() {
     </div>
   );
 }
+
+export const unstable_shouldReload: ShouldReloadFunction = () => false;

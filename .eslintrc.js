@@ -13,7 +13,7 @@ module.exports = {
   // set the jest version.
   settings: {
     jest: {
-      version: 27,
+      version: 28,
     },
   },
 };

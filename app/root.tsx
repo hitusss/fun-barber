@@ -12,14 +12,16 @@ import BackgroundImg from "~/image/background.jpg";
 import { Header } from "~/components/Header";
 import { Footer } from "~/components/Footer";
 
-import tailwindStylesheetUrl from "./styles/tailwind.css";
-import scrollbarStylesheetUrl from "./styles/scrollbar.css";
+import tailwindStylesheetUrl from "~/styles/tailwind.css";
+import scrollbarStylesheetUrl from "~/styles/scrollbar.css";
+import noScriptStylesheetUrl from "~/styles/no-script.css";
 import reachMenuButtonStylesheetUrl from "@reach/menu-button/styles.css";
 
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: reachMenuButtonStylesheetUrl },
     { rel: "stylesheet", href: scrollbarStylesheetUrl },
+    { rel: "stylesheet", href: noScriptStylesheetUrl },
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     {
       rel: "stylesheet",

@@ -12,19 +12,35 @@ import BackgroundImg from "~/image/background.jpg";
 import { Header } from "~/components/Header";
 import { Footer } from "~/components/Footer";
 
-import tailwindStylesheetUrl from "./styles/tailwind.css";
-import scrollbarStylesheetUrl from "./styles/scrollbar.css";
+import tailwindStylesheetUrl from "~/styles/tailwind.css";
+import scrollbarStylesheetUrl from "~/styles/scrollbar.css";
+import noScriptStylesheetUrl from "~/styles/no-script.css";
 import reachMenuButtonStylesheetUrl from "@reach/menu-button/styles.css";
 
 export const links: LinksFunction = () => {
   return [
-    { rel: "stylesheet", href: reachMenuButtonStylesheetUrl },
-    { rel: "stylesheet", href: scrollbarStylesheetUrl },
-    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "192X192",
+      href: "/favicons/logo192.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "512x512",
+      href: "/favicons/logo512.png",
+    },
+    { rel: "manifest", href: "/manifest.json" },
+    { rel: "icon", href: "/favicon.ico" },
     {
       rel: "stylesheet",
       href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
     },
+    { rel: "stylesheet", href: reachMenuButtonStylesheetUrl },
+    { rel: "stylesheet", href: scrollbarStylesheetUrl },
+    { rel: "stylesheet", href: noScriptStylesheetUrl },
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
   ];
 };
 
@@ -32,7 +48,7 @@ export const meta: MetaFunction = () => ({
   charset: "utf-8",
   viewport: "width=device-width,initial-scale=1,viewport-fit=cover",
   title: "Fun Barber",
-  description: "Fun Barber",
+  description: "FBarber barber shop official website.",
 });
 
 export default function App() {

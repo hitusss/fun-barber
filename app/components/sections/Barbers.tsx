@@ -21,7 +21,7 @@ export function Barbers({ barbers }: { barbers: Barber[] }) {
         >
           <Heading>Barbers</Heading>
         </motion.div>
-        <ul className="flex max-w-full snap-x gap-4 overflow-x-auto overscroll-contain scroll-smooth py-2">
+        <ul className="flex max-w-full snap-x gap-4 overflow-x-auto overflow-y-hidden overscroll-contain scroll-smooth py-2">
           {barbers.map((barber) => (
             <BarberCard
               key={barber.instagram}

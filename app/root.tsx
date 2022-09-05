@@ -37,9 +37,9 @@ export const links: LinksFunction = () => {
       rel: "stylesheet",
       href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
     },
+    { rel: "stylesheet", href: reachMenuButtonStylesheetUrl },
     { rel: "stylesheet", href: mainStylesheetUrl },
     { rel: "stylesheet", href: noScriptStylesheetUrl },
-    { rel: "stylesheet", href: reachMenuButtonStylesheetUrl },
     { rel: "stylesheet", href: tailwindStylesheetUrl },
   ];
 };
@@ -58,7 +58,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full font-serif text-paragraph text-white transition duration-500">
+      <body className="bg-white font-serif text-paragraph text-white transition duration-500">
         <Header />
         <main
           style={{

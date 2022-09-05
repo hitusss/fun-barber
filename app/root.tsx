@@ -12,8 +12,8 @@ import BackgroundImg from "~/image/background.jpg";
 import { Header } from "~/components/Header";
 import { Footer } from "~/components/Footer";
 
+import mainStylesheetUrl from "~/styles/main.css";
 import tailwindStylesheetUrl from "~/styles/tailwind.css";
-import scrollbarStylesheetUrl from "~/styles/scrollbar.css";
 import noScriptStylesheetUrl from "~/styles/no-script.css";
 import reachMenuButtonStylesheetUrl from "@reach/menu-button/styles.css";
 
@@ -37,9 +37,9 @@ export const links: LinksFunction = () => {
       rel: "stylesheet",
       href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
     },
-    { rel: "stylesheet", href: reachMenuButtonStylesheetUrl },
-    { rel: "stylesheet", href: scrollbarStylesheetUrl },
+    { rel: "stylesheet", href: mainStylesheetUrl },
     { rel: "stylesheet", href: noScriptStylesheetUrl },
+    { rel: "stylesheet", href: reachMenuButtonStylesheetUrl },
     { rel: "stylesheet", href: tailwindStylesheetUrl },
   ];
 };
@@ -58,14 +58,16 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full bg-background font-serif text-text">
+      <body className="h-full font-serif text-paragraph text-white transition duration-500">
         <Header />
         <main
           style={{
-            background: `linear-gradient(160deg, rgba(34, 33, 36, 0) -50%, #222124 61.65%), url(${BackgroundImg}), #222124`,
+            background: `linear-gradient(160deg, transparent -50%, rgb(var(--c-gray-d)) 65%), url(${BackgroundImg}), rgb(var(--c-gray-d))`,
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "fixed",
             backgroundSize: "cover",
           }}
-          className="min-h-full pt-28 pb-12 text-paragraph"
+          className="min-h-full pt-[72px]"
         >
           <Outlet />
         </main>

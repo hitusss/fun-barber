@@ -38,12 +38,12 @@ export async function loader() {
   });
 }
 
-export default function Index() {
+export default function Blog() {
   const [filter, setFilter] = React.useState("");
   const reducedMotion = useReducedMotion();
   const { blogPosts } = useLoaderData<LoaderData>();
   return (
-    <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-10">
+    <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-10 py-12">
       <div className="flex w-full items-center justify-center gap-9">
         <motion.img
           initial={{ opacity: 0.5, scale: 0.8 }}
@@ -65,7 +65,7 @@ export default function Index() {
           </p>
           <input
             type="text"
-            className="rounded-full border-2 border-text bg-white/90 px-4 py-2 text-brand focus:border-brand focus:outline-none"
+            className="rounded-full border-2 border-gray-l bg-transparent px-4 py-2 text-brand focus:border-brand focus:outline-none"
             placeholder="Filter blog posts"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}

@@ -9,9 +9,9 @@ import { ServiceCard } from "~/components/ServiceCard";
 export function Services({ services }: { services: Service[] }) {
   const reducedMotion = useReducedMotion();
   return (
-    <div
+    <section
       id="services"
-      className="mt-8 flex items-center justify-center gap-12 overflow-hidden lg:justify-end"
+      className="relative -mt-[100vh] flex min-h-screen items-center justify-center gap-12 overflow-hidden bg-white py-8 lg:justify-end"
     >
       <motion.div
         initial={{ opacity: 0.5, x: -200 }}
@@ -34,7 +34,7 @@ export function Services({ services }: { services: Service[] }) {
             />
           ))}
         </div>
-        <Button size="large">
+        <Button size="large" color="dark">
           <Link to="booking">Book Now</Link>
         </Button>
       </motion.div>
@@ -49,6 +49,6 @@ export function Services({ services }: { services: Service[] }) {
         alt=""
         className="hidden h-5/6 max-h-screen border-4 border-brand object-cover drop-shadow-lg xl:block"
       />
-    </div>
+    </section>
   );
 }

@@ -147,13 +147,13 @@ export default function BookingCalendar({ barber }: { barber: string }) {
       <input type="hidden" name="year" value={year || ""} />
       <input type="hidden" name="month" value={month || ""} />
       {showSpinner && (
-        <div className="absolute flex h-full w-full items-center justify-center bg-black/25">
+        <div className="absolute flex h-full w-full items-center justify-center bg-gray-d/25">
           <Spinner />
         </div>
       )}
 
       <fieldset disabled={showSpinner}>
-        <table className="w-[336px] overflow-hidden bg-background md:w-[560px]">
+        <table className="w-[336px] overflow-hidden bg-gray-d md:w-[560px]">
           <thead>
             <MonthSwitcher date={date} handleMonthChange={handleMonthChange} />
             <tr className="bg-brand/75">
@@ -174,7 +174,7 @@ export default function BookingCalendar({ barber }: { barber: string }) {
         </table>
       </fieldset>
 
-      <div className="flex w-[336px] flex-col items-center gap-4 bg-background p-6 md:w-[560px]">
+      <div className="flex w-[336px] flex-col items-center gap-4 bg-gray-d p-6 md:w-[560px]">
         <h2 tabIndex={0}>Available hours:</h2>
         {day ? (
           <fieldset
@@ -209,7 +209,7 @@ function MonthSwitcher({
       <th colSpan={2}>
         <button
           type="button"
-          className="flex h-10 w-full items-center justify-center text-text/50 hover:text-text md:h-16"
+          className="flex h-10 w-full items-center justify-center text-white/50 hover:text-white md:h-16"
           onClick={() => handleMonthChange(date.subtract(1, "months"))}
           disabled={moment().isSame(date, "month")}
           aria-label="Previous month"
@@ -227,7 +227,7 @@ function MonthSwitcher({
           </svg>
         </button>
       </th>
-      <th className="text-center text-text" colSpan={3} tabIndex={0}>
+      <th className="text-center" colSpan={3} tabIndex={0}>
         <h2 className="md:text-xl">
           {date.format("MMMM")} {date.format("YYYY")}
         </h2>
@@ -235,7 +235,7 @@ function MonthSwitcher({
       <th colSpan={2}>
         <button
           type="button"
-          className="flex h-10 w-full items-center justify-center text-text/50 hover:text-text md:h-16"
+          className="flex h-10 w-full items-center justify-center text-white/50 hover:text-white md:h-16"
           onClick={() => handleMonthChange(date.add(1, "months"))}
           aria-label="Next month"
         >

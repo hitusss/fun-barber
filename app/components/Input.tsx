@@ -18,7 +18,7 @@ export const Input = React.forwardRef(
         type="text"
         placeholder={label}
         className={clsx(
-          "w-full rounded-lg bg-background py-4 px-6 text-text drop-shadow-md",
+          "w-full rounded-lg bg-gray-d py-4 px-6 drop-shadow-md placeholder:text-gray-l",
           className
         )}
         {...props}

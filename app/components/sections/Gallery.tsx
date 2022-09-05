@@ -3,7 +3,7 @@ import { Heading } from "~/components/Heading";
 
 export function Gallery({ gallery }: { gallery: GalleryImage[] }) {
   return (
-    <div id="gallery" className="mt-16 flex flex-col gap-8">
+    <section id="gallery" className="flex flex-col justify-center gap-8 py-32">
       <div className="pl-4 lg:pl-16">
         <Heading>Gallery</Heading>
       </div>
@@ -34,6 +34,6 @@ export function Gallery({ gallery }: { gallery: GalleryImage[] }) {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 }

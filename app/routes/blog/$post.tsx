@@ -13,28 +13,26 @@ export async function loader({ params }: LoaderArgs) {
   const {
     blogPostsCollection: { items: blogPost },
   } = await contentful(`{
-    {
-      blogPostsCollection(where: {
-       title_contains: "${params.post?.replace(/-/g, " ")}"
-     }) {
-       items {
-         title
-         heroImage {
-           url
-         }
-         content {
-           json
-         }
-         date
-         author {
-           name
-           avatar {
-             url
-           }
-         }
-       }
-     }
-   }
+    blogPostsCollection(where: {
+      title_contains: "${params.post?.replace(/-/g, " ")}"
+    }) {
+      items {
+        title
+        heroImage {
+          url
+        }
+        content {
+          json
+        }
+        date
+        author {
+          name
+          avatar {
+            url
+          }
+        }
+      }
+    }
   }`);
 
   return json<LoaderData>({
@@ -45,7 +43,7 @@ export async function loader({ params }: LoaderArgs) {
 export default function Post() {
   const { blogPost } = useLoaderData<LoaderData>();
   return (
-    <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col gap-8 px-4 lg:px-0">
+    <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col gap-8 px-4 py-12 lg:px-0">
       <figure>
         <picture>
           <source
@@ -64,7 +62,7 @@ export default function Post() {
         </picture>
       </figure>
       <div className="flex flex-col gap-2">
-        <p className="text-sm text-text/75">
+        <p className="text-sm text-gray-l">
           {new Date(blogPost.date).toLocaleDateString()}
         </p>
         <h1 className="text-heading2 font-bold text-brand">{blogPost.title}</h1>

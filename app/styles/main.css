@@ -1,0 +1,23 @@
+:root {
+  --c-brand: 151 116 78;
+  --c-white: 255 254 254;
+  --c-black: 0 0 0;
+  --c-gray-l: 106 107 107;
+  --c-gray-d: 42 44 44;
+}
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--c-brand));
+  outline: 1px solid rgb(var(--c-brand));
+  border-radius: 8px;
+}

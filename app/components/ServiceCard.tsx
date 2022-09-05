@@ -26,14 +26,14 @@ export function ServiceCard({
       }}
       viewport={{ once: true }}
       tabIndex={0}
-      className="flex h-80 w-72 flex-col items-center gap-4 rounded-lg bg-white py-4"
+      className="flex h-80 w-72 flex-col items-center gap-4 rounded-lg bg-gray-d py-6 shadow-md"
     >
       <Icon className="fill-brand stroke-brand" />
       <div className="flex flex-col items-center font-bold text-brand">
         <h2 className="text-2xl">{title}</h2>
         <h3 className="text-xl">{price}$</h3>
       </div>
-      <p className="px-4 text-center text-sm text-black">{description}</p>
+      <p className="px-4 text-center text-sm">{description}</p>
     </motion.div>
   );
 }

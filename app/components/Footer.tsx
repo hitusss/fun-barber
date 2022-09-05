@@ -3,7 +3,7 @@ import { InstagramIcon, TwitterIcon, FacebookIcon } from "~/components/Icons";
 
 export function Footer() {
   return (
-    <footer className="flex w-full flex-col items-center justify-around gap-4 bg-brand py-10 text-paragraph lg:flex-row">
+    <footer className="flex w-full flex-col items-center justify-around gap-4 bg-brand py-10 lg:flex-row">
       <Logo />
       <div tabIndex={0} className="text-center text-sm lg:text-left">
         <h2 className="mb-2 text-2xl">Contact</h2>
@@ -23,7 +23,7 @@ export function Footer() {
         <p>Saturday 9am - 3pm</p>
         <p>Sunday CLOSED</p>
       </div>
-      <div className="fill-text text-center text-sm lg:text-left">
+      <div className="fill-white text-center text-sm lg:text-left">
         <h2 className="mb-2 text-2xl">Socials</h2>
         <div className="flex flex-col gap-3">
           <a
@@ -36,7 +36,7 @@ export function Footer() {
           <a
             href="https://twitter.com/funbarber___"
             aria-label="funbarber on twitter"
-            className="flex items-center gap-2 fill-text"
+            className="flex items-center gap-2 fill-white"
           >
             <TwitterIcon /> funbarber
           </a>

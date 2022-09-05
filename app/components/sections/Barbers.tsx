@@ -6,34 +6,36 @@ import { BarberCard } from "~/components/BarberCard";
 export function Barbers({ barbers }: { barbers: Barber[] }) {
   const reducedMotion = useReducedMotion();
   return (
-    <div
-      id="barbers"
-      className="flex flex-col items-center gap-14 overflow-hidden"
-    >
-      <motion.div
-        initial={{ opacity: 0.5, y: 200 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: reducedMotion ? 0 : 0.5,
-        }}
-        viewport={{ once: true }}
+    <div className="h-[200vh]">
+      <section
+        id="barbers"
+        className="sticky top-0 flex h-screen flex-col items-center justify-center gap-14 p-8"
       >
-        <Heading>Barbesrs</Heading>
-      </motion.div>
-      <div className="m-6 flex flex-col flex-wrap justify-center gap-8 md:flex-row">
-        {barbers.map((barber) => (
-          <BarberCard
-            key={barber.instagram}
-            image={barber.avatar.url}
-            name={barber.name}
-            instagram={barber.instagram}
-            instagramLink={barber.instagramUrl}
-            bio={
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lorem ullamcorper feugiat facilisis augue integer eget. Quam consectetur netus gravida mi."
-            }
-          />
-        ))}
-      </div>
+        <motion.div
+          initial={{ opacity: 0.5, y: 200 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: reducedMotion ? 0 : 0.5,
+          }}
+          viewport={{ once: true }}
+        >
+          <Heading>Barbers</Heading>
+        </motion.div>
+        <ul className="flex max-w-full snap-x gap-4 overflow-x-auto overflow-y-hidden overscroll-contain scroll-smooth py-2">
+          {barbers.map((barber) => (
+            <BarberCard
+              key={barber.instagram}
+              image={barber.avatar.url}
+              name={barber.name}
+              instagram={barber.instagram}
+              instagramLink={barber.instagramUrl}
+              bio={
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lorem ullamcorper feugiat facilisis augue integer eget. Quam consectetur netus gravida mi."
+              }
+            />
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

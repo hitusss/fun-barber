@@ -30,7 +30,7 @@ export const RadioButton = React.forwardRef(
         <label
           htmlFor={id}
           className={clsx(
-            "cursor-pointer text-text peer-disabled:cursor-default peer-disabled:text-text/25",
+            "cursor-pointer peer-disabled:cursor-default peer-disabled:text-gray-l",
             className
           )}
         >

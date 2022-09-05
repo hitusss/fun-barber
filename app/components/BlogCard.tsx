@@ -12,7 +12,7 @@ export function BlogCard({ title, heroImage, date, author }: BlogCardProps) {
       to={`/blog/${title.toLowerCase().replace(/\s/g, "-")}`}
       aria-label={`blog post: ${title}`}
     >
-      <motion.div
+      <motion.article
         initial={{ opacity: 0.5, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.7 }}
@@ -40,7 +40,7 @@ export function BlogCard({ title, heroImage, date, author }: BlogCardProps) {
           </picture>
         </figure>
         <div className="flex flex-col items-start px-2 text-left">
-          <p className="text-sm text-text/75">
+          <p className="text-sm text-gray-l">
             {new Date(date).toLocaleDateString()}
           </p>
           <h2 className="text-2xl font-bold">
@@ -68,7 +68,7 @@ export function BlogCard({ title, heroImage, date, author }: BlogCardProps) {
             <p>{author.name}</p>
           </div>
         </div>
-      </motion.div>
+      </motion.article>
     </Link>
   );
 }

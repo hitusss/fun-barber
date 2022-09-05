@@ -35,7 +35,7 @@ function NavLink({ to, children, ...rest }: Parameters<typeof Link>["0"]) {
       <Link
         prefetch="intent"
         className={clsx(
-          "text-lg outline-none hover:text-brand/75 focus:text-brand/75",
+          "text-lg outline-none hover:text-white/75 focus:text-white/75",
           {
             "text-brand": isSelected,
           }
@@ -55,15 +55,9 @@ function MobileMenu() {
 
   React.useEffect(() => {
     if (isExpanded) {
-      // don't use overflow-hidden, as that toggles the scrollbar and causes layout shift
-      document.body.classList.add("fixed");
-      document.body.classList.add("overflow-y-scroll");
-      // alternatively, get bounding box of the menu, and set body height to that.
-      document.body.style.height = "100vh";
+      document.body.classList.add("overflow-hidden");
     } else {
-      document.body.classList.remove("fixed");
-      document.body.classList.remove("overflow-y-scroll");
-      document.body.style.removeProperty("height");
+      document.body.classList.remove("overflow-hidden");
     }
   }, [isExpanded]);
 
@@ -72,7 +66,7 @@ function MobileMenu() {
       {isExpanded && (
         <MenuPopover
           position={(r) => ({
-            top: `calc(${Number(r?.top) + Number(r?.height)}px + 1.5rem)`,
+            top: `calc(${Number(r?.top) + Number(r?.height)}px)`,
             left: 0,
             bottom: 0,
             right: 0,
@@ -87,12 +81,12 @@ function MobileMenu() {
             transition={{
               duration: reducedMotion ? 0 : 0.15,
             }}
-            className="flex h-full flex-col overflow-y-scroll bg-background text-xl"
+            className="flex h-full flex-col overflow-y-scroll bg-gray-d text-xl"
           >
             <MenuItems className="border-none bg-transparent p-0">
               {links.map((link) => (
                 <MenuLink
-                  className="border-b border-white py-9 text-center hover:bg-transparent hover:text-brand focus:bg-transparent focus:text-brand"
+                  className="border-b border-white py-9 text-center text-white hover:bg-transparent hover:text-white/50 focus:bg-transparent focus:text-white/50"
                   as={Link}
                   key={link.to}
                   to={link.to}
@@ -115,7 +109,7 @@ export function Header() {
     minDuration: 300,
   });
   return (
-    <header className="absolute z-40 flex w-full justify-center px-10 py-6 text-paragraph">
+    <header className="absolute z-40 flex w-full justify-center px-10 py-2">
       <div className="flex w-full max-w-screen-xl items-center justify-between">
         <div className="flex items-center gap-5">
           <Link to="/" tabIndex={-1} aria-hidden="true">
@@ -138,7 +132,10 @@ export function Header() {
                 const state = isExpanded ? "open" : "closed";
                 return (
                   <>
-                    <MenuButton aria-label="toggle mobile menu button">
+                    <MenuButton
+                      className="inline-flex h-14 w-14 items-center justify-center rounded-full p-1"
+                      aria-label="toggle mobile menu button"
+                    >
                       <svg
                         width="32"
                         height="32"

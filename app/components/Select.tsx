@@ -20,7 +20,7 @@ export const Select = React.forwardRef(
         ref={ref}
         name={name}
         className={clsx(
-          "block w-full rounded-lg bg-background py-4 px-6 text-text drop-shadow-md",
+          "block w-full rounded-lg bg-gray-d py-4 px-6 drop-shadow-md",
           className
         )}
         defaultValue={options[0]}

@@ -15,9 +15,15 @@ module.exports = {
         paragraph: "clamp(0.75rem, 1vw + 0.5rem, 1.5rem)",
       },
       colors: {
-        brand: "#59442D",
-        background: "#222124",
-        text: "#C0C0C0",
+        transparent: "transparent",
+        current: "currentColor",
+        white: "rgb(var(--c-white) / <alpha-value>)",
+        black: "rgb(var(--c-black) / <alpha-value>)",
+        brand: "rgb(var(--c-brand) / <alpha-value>)",
+        gray: {
+          l: "rgb(var(--c-gray-l) / <alpha-value>)",
+          d: "rgb(var(--c-gray-d) / <alpha-value>)",
+        },
       },
     },
   },

@@ -5,9 +5,9 @@ import { Heading } from "~/components/Heading";
 export function About() {
   const reducedMotion = useReducedMotion();
   return (
-    <div
+    <section
       id="about"
-      className="flex h-screen items-center gap-12 overflow-hidden"
+      className="relative -mt-[100vh] flex h-screen items-center gap-12 overflow-hidden bg-white py-8 text-black"
     >
       <motion.img
         initial={{ opacity: 0.5, x: -200 }}
@@ -43,6 +43,6 @@ export function About() {
           justo tellus neque. Sem nisi amet sit nibh neque mollis.
         </p>
       </motion.div>
-    </div>
+    </section>
   );
 }

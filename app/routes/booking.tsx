@@ -13,7 +13,7 @@ import { z } from "zod";
 import { makeDomainFunction } from "remix-domains";
 import { performMutation, Form } from "remix-forms";
 import type { Service, Barber } from "~/types";
-import BookingCalendar from "~/routes/resource/bookingCalendar";
+import { BookingCalendar } from "~/routes/resource/bookingCalendar";
 import { Select } from "~/components/Select";
 import { Input } from "~/components/Input";
 import { Button } from "~/components/Button";

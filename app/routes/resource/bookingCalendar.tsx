@@ -23,7 +23,7 @@ export async function loader({ request }: LoaderArgs) {
   return json(bookings);
 }
 
-export default function BookingCalendar({ barber }: { barber: string }) {
+export function BookingCalendar({ barber }: { barber: string }) {
   const bookingCalendarFetcher = useFetcher<Pick<Booking, "date" | "hour">[]>();
   const [searchParams, setSearchParams] = useSearchParams();
   const showSpinner = useSpinDelay(bookingCalendarFetcher.state !== "idle", {

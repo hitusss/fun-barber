@@ -1,5 +1,6 @@
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -8,9 +9,10 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import BackgroundImg from "~/image/background.jpg";
+import { MainWrapper } from "~/components/MainWrapper";
 import { Header } from "~/components/Header";
 import { Footer } from "~/components/Footer";
+import { Error } from "~/components/Error";
 
 import mainStylesheetUrl from "~/styles/main.css";
 import tailwindStylesheetUrl from "~/styles/tailwind.css";
@@ -62,21 +64,34 @@ export default function App() {
       </head>
       <body className="bg-white font-serif text-paragraph text-white transition duration-500">
         <Header />
-        <main
-          style={{
-            background: `linear-gradient(160deg, transparent -50%, rgb(var(--c-gray-d)) 65%), url(${BackgroundImg}), rgb(var(--c-gray-d))`,
-            backgroundRepeat: "no-repeat",
-            backgroundAttachment: "fixed",
-            backgroundSize: "cover",
-          }}
-          className="min-h-full pt-[72px]"
-        >
+        <MainWrapper>
           <Outlet />
-        </main>
+        </MainWrapper>
         <Footer />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+      </body>
+    </html>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+  return (
+    <html lang="en" className="h-full scroll-smooth">
+      <head>
+        <title>Oh no...</title>
+        <Links />
+      </head>
+      <body className="bg-white font-serif text-paragraph text-white transition duration-500">
+        <MainWrapper className="flex flex-col items-center justify-center gap-6">
+          <Error className="max-w-screen-lg text-3xl">
+            500 - Oh no, something did not go well.
+          </Error>
+          <Link to="/">Go Home</Link>
+        </MainWrapper>
+        <Scripts />
       </body>
     </html>
   );

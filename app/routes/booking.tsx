@@ -6,7 +6,7 @@ import {
   Link,
   useSearchParams,
 } from "@remix-run/react";
-import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
@@ -17,7 +17,7 @@ import { BookingCalendar } from "~/routes/resource/bookingCalendar";
 import { Select } from "~/components/Select";
 import { Input } from "~/components/Input";
 import { Button } from "~/components/Button";
-import { Error } from "~/components/Error";
+import { ErrorComponent } from "~/components/ErrorComponent";
 import { contentful } from "~/utils/contentful.server";
 import { createBooking } from "~/models/booking.server";
 import { getAllSearchParams } from "~/utils";
@@ -80,6 +80,10 @@ export async function loader({ request }: LoaderArgs) {
   });
 }
 
+export const meta: MetaFunction = () => ({
+  title: "Booking | Fun Barber",
+});
+
 export default function Booking() {
   const bookingFetcher = useFetcher();
   const { barbers, services } = useLoaderData<LoaderData>();
@@ -119,9 +123,9 @@ export default function Booking() {
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center justify-center">
       <noscript>
-        <Error className="text-3xl">
+        <ErrorComponent className="text-3xl">
           You need to enable JavaScript to use this website.
-        </Error>
+        </ErrorComponent>
       </noscript>
       <AnimatePresence>
         <motion.div
@@ -136,7 +140,7 @@ export default function Booking() {
           <Form
             schema={bookingSchema}
             fetcher={bookingFetcher}
-            errorComponent={Error}
+            errorComponent={ErrorComponent}
             method="post"
             className="flex flex-col items-center gap-4"
           >

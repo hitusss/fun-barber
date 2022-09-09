@@ -14,7 +14,7 @@ import {
 import { MainWrapper } from "~/components/MainWrapper";
 import { Header } from "~/components/Header";
 import { Footer } from "~/components/Footer";
-import { Error } from "~/components/Error";
+import { ErrorComponent } from "~/components/ErrorComponent";
 
 import mainStylesheetUrl from "~/styles/main.css";
 import tailwindStylesheetUrl from "~/styles/tailwind.css";
@@ -88,9 +88,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
       </head>
       <body className="bg-white font-serif text-paragraph text-white transition duration-500">
         <MainWrapper className="flex flex-col items-center justify-center gap-6">
-          <Error className="max-w-screen-lg text-center text-4xl">
+          <ErrorComponent className="max-w-screen-lg text-center text-4xl">
             500 - Oh no, something did not go well.
-          </Error>
+          </ErrorComponent>
           <Link to="/" className="text-blue-600 underline">
             Go Home
           </Link>
@@ -114,9 +114,9 @@ export function CatchBoundary() {
         </head>
         <body className="bg-white font-serif text-paragraph text-white transition duration-500">
           <MainWrapper className="flex flex-col items-center justify-center gap-6">
-            <Error className="max-w-screen-lg text-center text-4xl">
+            <ErrorComponent className="max-w-screen-lg text-center text-4xl">
               404 - Oh no, you found a page that's missing stuff.
-            </Error>
+            </ErrorComponent>
             <p>{location.pathname} is not a valid page.</p>
             <Link to="/" className="text-blue-600 underline">
               Go Home

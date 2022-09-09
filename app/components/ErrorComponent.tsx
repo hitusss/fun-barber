@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-export function Error({
+export function ErrorComponent({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {

@@ -1,5 +1,5 @@
 import { useLoaderData } from "@remix-run/react";
-import type { LoaderArgs } from "@remix-run/node";
+import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { BlogPost } from "~/types";
@@ -40,7 +40,13 @@ export async function loader({ params }: LoaderArgs) {
   });
 }
 
-export default function Post() {
+export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
+  return {
+    title: `${data.blogPost.title} | Fun Barber`,
+  };
+};
+
+export default function PostPage() {
   const { blogPost } = useLoaderData<LoaderData>();
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col gap-8 px-4 py-12 lg:px-0">

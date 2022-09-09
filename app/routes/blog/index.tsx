@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useLoaderData } from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import type { BlogPost } from "~/types";
@@ -38,7 +39,11 @@ export async function loader() {
   });
 }
 
-export default function Blog() {
+export const meta: MetaFunction = () => ({
+  title: "Blog | Fun Barber",
+});
+
+export default function BlogPage() {
   const [filter, setFilter] = React.useState("");
   const reducedMotion = useReducedMotion();
   const { blogPosts } = useLoaderData<LoaderData>();

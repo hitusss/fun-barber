@@ -39,7 +39,6 @@ export const links: LinksFunction = () => {
     },
     { rel: "stylesheet", href: reachMenuButtonStylesheetUrl },
     { rel: "stylesheet", href: mainStylesheetUrl },
-    { rel: "stylesheet", href: noScriptStylesheetUrl },
     { rel: "stylesheet", href: tailwindStylesheetUrl },
   ];
 };
@@ -57,6 +56,9 @@ export default function App() {
       <head>
         <Meta />
         <Links />
+        <noscript>
+          <link rel="stylesheet" href={noScriptStylesheetUrl} />
+        </noscript>
       </head>
       <body className="bg-white font-serif text-paragraph text-white transition duration-500">
         <Header />

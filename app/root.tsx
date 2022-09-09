@@ -88,7 +88,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
       </head>
       <body className="bg-white font-serif text-paragraph text-white transition duration-500">
         <MainWrapper className="flex flex-col items-center justify-center gap-6">
-          <ErrorComponent className="max-w-screen-lg text-center text-4xl">
+          <ErrorComponent size="large" className="max-w-screen-lg text-center">
             500 - Oh no, something did not go well.
           </ErrorComponent>
           <Link to="/" className="text-blue-600 underline">
@@ -114,7 +114,10 @@ export function CatchBoundary() {
         </head>
         <body className="bg-white font-serif text-paragraph text-white transition duration-500">
           <MainWrapper className="flex flex-col items-center justify-center gap-6">
-            <ErrorComponent className="max-w-screen-lg text-center text-4xl">
+            <ErrorComponent
+              size="large"
+              className="max-w-screen-lg text-center"
+            >
               404 - Oh no, you found a page that's missing stuff.
             </ErrorComponent>
             <p>{location.pathname} is not a valid page.</p>

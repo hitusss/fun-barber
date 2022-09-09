@@ -123,7 +123,7 @@ export default function Booking() {
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center justify-center">
       <noscript>
-        <ErrorComponent className="text-3xl">
+        <ErrorComponent size="large">
           You need to enable JavaScript to use this website.
         </ErrorComponent>
       </noscript>

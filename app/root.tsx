@@ -7,6 +7,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch,
+  useLocation,
 } from "@remix-run/react";
 
 import { MainWrapper } from "~/components/MainWrapper";
@@ -86,13 +88,44 @@ export function ErrorBoundary({ error }: { error: Error }) {
       </head>
       <body className="bg-white font-serif text-paragraph text-white transition duration-500">
         <MainWrapper className="flex flex-col items-center justify-center gap-6">
-          <Error className="max-w-screen-lg text-3xl">
+          <Error className="max-w-screen-lg text-center text-4xl">
             500 - Oh no, something did not go well.
           </Error>
-          <Link to="/">Go Home</Link>
+          <Link to="/" className="text-blue-600 underline">
+            Go Home
+          </Link>
         </MainWrapper>
         <Scripts />
       </body>
     </html>
   );
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+  const location = useLocation();
+  console.error("CatchBoundary", caught);
+  if (caught.status === 404) {
+    return (
+      <html lang="en" className="h-full scroll-smooth">
+        <head>
+          <title>Oh no...</title>
+          <Links />
+        </head>
+        <body className="bg-white font-serif text-paragraph text-white transition duration-500">
+          <MainWrapper className="flex flex-col items-center justify-center gap-6">
+            <Error className="max-w-screen-lg text-center text-4xl">
+              404 - Oh no, you found a page that's missing stuff.
+            </Error>
+            <p>{location.pathname} is not a valid page.</p>
+            <Link to="/" className="text-blue-600 underline">
+              Go Home
+            </Link>
+          </MainWrapper>
+          <Scripts />
+        </body>
+      </html>
+    );
+  }
+  throw new Error(`Unhandled error: ${caught.status}`);
 }

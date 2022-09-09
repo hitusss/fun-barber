@@ -7,7 +7,8 @@
         "instagramUrl": "https://www.instagram.com/Jasongg/",
         "avatar": {
           "url": "https://images.ctfassets.net/kjp2g5518fv4/4QMgkuCPqGQaSfP7VaOUqG/a4c1921eef317fd4ba6658d45b5c7a79/eugene-chystiakov-taZSJ6xmt48-unsplash.jpg"
-        }
+        },
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lorem ullamcorper feugiat facilisis augue integer eget. Quam consectetur netus gravida mi."
       },
       {
         "name": "William Trott",
@@ -15,7 +16,8 @@
         "instagramUrl": "https://www.instagram.com/Williamtt/",
         "avatar": {
           "url": "https://images.ctfassets.net/kjp2g5518fv4/4QMgkuCPqGQaSfP7VaOUqG/a4c1921eef317fd4ba6658d45b5c7a79/eugene-chystiakov-taZSJ6xmt48-unsplash.jpg"
-        }
+        },
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lorem ullamcorper feugiat facilisis augue integer eget. Quam consectetur netus gravida mi."
       },
       {
         "name": "Daniel Anderson",
@@ -23,7 +25,8 @@
         "instagramUrl": "https://www.instagram.com/Danielaa/",
         "avatar": {
           "url": "https://images.ctfassets.net/kjp2g5518fv4/4QMgkuCPqGQaSfP7VaOUqG/a4c1921eef317fd4ba6658d45b5c7a79/eugene-chystiakov-taZSJ6xmt48-unsplash.jpg"
-        }
+        },
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lorem ullamcorper feugiat facilisis augue integer eget. Quam consectetur netus gravida mi."
       },
       {
         "name": "Darrell Smith",
@@ -31,7 +34,8 @@
         "instagramUrl": "https://www.instagram.com/Darrellss/",
         "avatar": {
           "url": "https://images.ctfassets.net/kjp2g5518fv4/4QMgkuCPqGQaSfP7VaOUqG/a4c1921eef317fd4ba6658d45b5c7a79/eugene-chystiakov-taZSJ6xmt48-unsplash.jpg"
-        }
+        },
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lorem ullamcorper feugiat facilisis augue integer eget. Quam consectetur netus gravida mi."
       },
       {
         "name": "Robert Andrews",
@@ -39,7 +43,8 @@
         "instagramUrl": "https://www.instagram.com/Robertaa/",
         "avatar": {
           "url": "https://images.ctfassets.net/kjp2g5518fv4/4QMgkuCPqGQaSfP7VaOUqG/a4c1921eef317fd4ba6658d45b5c7a79/eugene-chystiakov-taZSJ6xmt48-unsplash.jpg"
-        }
+        },
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lorem ullamcorper feugiat facilisis augue integer eget. Quam consectetur netus gravida mi."
       }
     ]
   },

@@ -28,6 +28,7 @@ export async function loader() {
         avatar {
           url
         }
+        bio
       }
     }
     servicesCollection {

@@ -14,6 +14,7 @@ export type Barber = {
   avatar: {
     url: string;
   };
+  bio: string;
 };
 
 export type GalleryImage = {

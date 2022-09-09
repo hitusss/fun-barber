@@ -29,9 +29,7 @@ export function Barbers({ barbers }: { barbers: Barber[] }) {
               name={barber.name}
               instagram={barber.instagram}
               instagramLink={barber.instagramUrl}
-              bio={
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lorem ullamcorper feugiat facilisis augue integer eget. Quam consectetur netus gravida mi."
-              }
+              bio={barber.bio}
             />
           ))}
         </ul>

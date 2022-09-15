@@ -6,7 +6,7 @@ import { About } from "~/components/sections/About";
 import { Barbers } from "~/components/sections/Barbers";
 import { Services } from "~/components/sections/Services";
 import { Gallery } from "~/components/sections/Gallery";
-import { contentful } from "~/utils/contentful.server";
+import { contentful } from "~/services/contentful.server";
 
 type LoaderData = {
   barbers: Barber[];

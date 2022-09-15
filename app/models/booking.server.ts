@@ -1,5 +1,5 @@
 import moment from "moment";
-import { prisma } from "~/utils/db.server";
+import { prisma } from "~/services/db.server";
 import { startEndMonth } from "~/utils";
 
 export type { Booking } from "@prisma/client";

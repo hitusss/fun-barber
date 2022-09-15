@@ -3,7 +3,7 @@ import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { BlogPost } from "~/types";
-import { contentful } from "~/utils/contentful.server";
+import { contentful } from "~/services/contentful.server";
 
 type LoaderData = {
   blogPost: BlogPost;

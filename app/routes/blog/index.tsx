@@ -7,7 +7,7 @@ import type { BlogPost } from "~/types";
 import BlogImg from "~/image/blog.jpg";
 import { Heading } from "~/components/Heading";
 import { BlogCard } from "~/components/BlogCard";
-import { contentful } from "~/utils/contentful.server";
+import { contentful } from "~/services/contentful.server";
 
 type LoaderData = {
   blogPosts: Omit<BlogPost, "content">[];

@@ -18,7 +18,7 @@ import { Select } from "~/components/Select";
 import { Input } from "~/components/Input";
 import { Button } from "~/components/Button";
 import { ErrorComponent } from "~/components/ErrorComponent";
-import { contentful } from "~/utils/contentful.server";
+import { contentful } from "~/services/contentful.server";
 import { createBooking } from "~/models/booking.server";
 import { getAllSearchParams } from "~/utils";
 

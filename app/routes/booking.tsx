@@ -6,7 +6,7 @@ import {
   Link,
   useSearchParams,
 } from "@remix-run/react";
-import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
@@ -38,6 +38,11 @@ const bookingSchema = z.object({
   lastName: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email(),
   phone: z.string().regex(/[0-9]{9}/, { message: "Invalid phone number" }),
+  privacyPolicy: z.literal("privacyPolicy", {
+    errorMap: () => ({
+      message: "You must accept Privacy Policy.",
+    }),
+  }),
 });
 
 export const bookingMutation = makeDomainFunction(bookingSchema)(
@@ -56,7 +61,7 @@ export async function action({ request }: ActionArgs) {
   return json({ ...result, ok: true });
 }
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader() {
   const {
     barbersCollection: { items: barbers },
     servicesCollection: { items: services },
@@ -233,7 +238,24 @@ export default function Booking() {
                     )}
                   </Field>
                 </fieldset>
-
+                <Field name="privacyPolicy">
+                  {({ Errors }) => (
+                    <>
+                      <label className="flex items-center gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          value="privacyPolicy"
+                          {...register("privacyPolicy")}
+                        />{" "}
+                        I accept the{" "}
+                        <Link to="/privacy" className="text-blue-600 underline">
+                          Privacy Policy
+                        </Link>
+                      </label>
+                      <Errors />
+                    </>
+                  )}
+                </Field>
                 <Errors />
                 <Button
                   className="my-4 px-16"

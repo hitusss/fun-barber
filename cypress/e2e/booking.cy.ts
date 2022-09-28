@@ -6,6 +6,7 @@ describe("booking tests", () => {
     cy.findByText(/last name is required/i).should("be.visible");
     cy.findByText(/invalid email/i).should("be.visible");
     cy.findByText(/invalid phone number/i).should("be.visible");
+    cy.findByText(/you must accept privacy policy/i).should("be.visible");
   });
   it("should throw error with incorrect phone number", () => {
     cy.visitAndCheck("/booking");
@@ -34,6 +35,7 @@ describe("booking tests", () => {
     cy.findByLabelText(/last name/i).type("Doe");
     cy.findByLabelText(/email/i).type("john@doe.com");
     cy.findByLabelText(/phone/i).type("123456789");
+    cy.findByLabelText(/privacy policy/i).click();
     cy.findByRole("button", { name: /book/i }).click();
     cy.findByText(/booking successful/i).should("be.visible");
     cy.findByRole("link", { name: /book another appointment/i }).should(

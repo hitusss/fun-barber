@@ -18,11 +18,11 @@ export function Gallery({ gallery }: { gallery: GalleryImage[] }) {
               <picture>
                 <source
                   srcSet={`${item.image.url}?w=300&h=300&fm=webp`}
-                  type="image/webp"
+                  type="images/webp"
                 />
                 <source
                   srcSet={`${item.image.url}?w=300&h=300&fm=jpg`}
-                  type="image/jpeg"
+                  type="images/jpeg"
                 />
                 <img
                   src={`${item.image.url}?w=300&h=300&fm=jpg`}

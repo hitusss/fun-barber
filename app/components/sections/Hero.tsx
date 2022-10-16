@@ -1,6 +1,5 @@
 import { Link } from "@remix-run/react";
 import { motion, useReducedMotion } from "framer-motion";
-import HeroImg from "~/image/hero.jpg";
 import { Button } from "~/components/Button";
 
 export function Hero() {
@@ -26,17 +25,23 @@ export function Hero() {
             <Link to="booking">Book Now</Link>
           </Button>
         </motion.div>
-        <motion.img
-          initial={{ opacity: 0.5, x: 200 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{
-            duration: reducedMotion ? 0 : 0.5,
-          }}
-          viewport={{ once: true }}
-          src={HeroImg}
-          alt=""
-          className="absolute -right-1/4 aspect-[8/9] h-4/5 border-4 border-brand object-cover drop-shadow-lg lg:right-[15%]"
-        />
+        <figure className="h-4/5">
+          <picture>
+            <source srcSet="images/hero.webp" type="image/webp" />
+            <source srcSet="images/hero.jpg" type="image/jpeg" />
+            <motion.img
+              initial={{ opacity: 0.5, x: 200 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: reducedMotion ? 0 : 0.5,
+              }}
+              viewport={{ once: true }}
+              src="images/hero.jpg"
+              alt=""
+              className="absolute -right-1/4 aspect-[8/9] h-4/5 border-4 border-brand object-cover drop-shadow-lg lg:right-[15%]"
+            />
+          </picture>
+        </figure>
       </section>
     </div>
   );

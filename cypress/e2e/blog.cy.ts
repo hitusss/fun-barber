@@ -20,8 +20,8 @@ describe("blog tests", () => {
     cy.visitAndCheck("/blog");
 
     cy.findAllByRole("link", { name: /example blog post/i }).should(
-      "have.length",
-      2
+      "have.length.greaterThan",
+      1
     );
     cy.findByPlaceholderText(/filter/i).type("example blog post 2");
     cy.findAllByRole("link", { name: /example blog post/i }).should(

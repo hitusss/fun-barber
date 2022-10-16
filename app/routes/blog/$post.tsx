@@ -15,7 +15,7 @@ export async function loader({ params }: LoaderArgs) {
     blogPostsCollection: { items: blogPost },
   } = await contentful(`{
     blogPostsCollection(where: {
-      slag: ${params.post}
+      slag: "${params.post}"
     }) {
       items {
         title

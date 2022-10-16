@@ -1,6 +1,5 @@
 import * as React from "react";
 import clsx from "clsx";
-import BackgroundImg from "~/image/background.jpg";
 
 export function MainWrapper({
   children,
@@ -11,7 +10,7 @@ export function MainWrapper({
   return (
     <main
       style={{
-        background: `linear-gradient(160deg, transparent -50%, rgb(var(--c-gray-d)) 65%), url(${BackgroundImg}), rgb(var(--c-gray-d))`,
+        background: `linear-gradient(160deg, transparent -50%, rgb(var(--c-gray-d)) 65%), url(images/background.jpg), rgb(var(--c-gray-d))`,
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
         backgroundSize: "cover",

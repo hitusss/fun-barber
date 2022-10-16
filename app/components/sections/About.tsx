@@ -1,5 +1,4 @@
 import { motion, useReducedMotion } from "framer-motion";
-import AboutImg from "~/image/about.jpg";
 import { Heading } from "~/components/Heading";
 
 export function About() {
@@ -9,17 +8,23 @@ export function About() {
       id="about"
       className="relative -mt-[100vh] flex h-screen items-center gap-12 overflow-hidden bg-white py-8 text-black"
     >
-      <motion.img
-        initial={{ opacity: 0.5, x: -200 }}
-        whileInView={{ opacity: 1, x: -32 }}
-        transition={{
-          duration: reducedMotion ? 0 : 0.5,
-        }}
-        viewport={{ once: true, margin: "-15%" }}
-        src={AboutImg}
-        alt=""
-        className="hidden h-5/6 border-4 border-brand object-cover drop-shadow-lg lg:block"
-      />
+      <figure className="h-5/6">
+        <picture>
+          <source srcSet="images/about.webp" type="image/webp" />
+          <source srcSet="images/about.jpg" type="image/jpeg" />
+          <motion.img
+            initial={{ opacity: 0.5, x: -200 }}
+            whileInView={{ opacity: 1, x: -32 }}
+            transition={{
+              duration: reducedMotion ? 0 : 0.5,
+            }}
+            viewport={{ once: true, margin: "-15%" }}
+            src="images/about.jpg"
+            alt=""
+            className="hidden h-full border-4 border-brand object-cover drop-shadow-lg lg:block"
+          />
+        </picture>
+      </figure>
       <motion.div
         initial={{ opacity: 0.5, x: 200 }}
         whileInView={{ opacity: 1, x: 0 }}

@@ -4,6 +4,7 @@ import { json } from "@remix-run/node";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { BlogPost } from "~/types";
 import { contentful } from "~/services/contentful.server";
+import { TagWrapper, Tag } from "~/components/Tags";
 
 type LoaderData = {
   blogPost: BlogPost;
@@ -14,10 +15,12 @@ export async function loader({ params }: LoaderArgs) {
     blogPostsCollection: { items: blogPost },
   } = await contentful(`{
     blogPostsCollection(where: {
-      title_contains: "${params.post?.replace(/-/g, " ")}"
+      slag: ${params.post}
     }) {
       items {
         title
+        tags
+        description
         heroImage {
           url
         }
@@ -71,6 +74,7 @@ export default function PostPage() {
         <p className="text-sm text-gray-l">
           {new Date(blogPost.date).toLocaleDateString()}
         </p>
+
         <h1 className="text-heading2 font-bold text-brand">{blogPost.title}</h1>
         <div className="flex items-center gap-2 text-base">
           <figure>
@@ -92,6 +96,11 @@ export default function PostPage() {
           </figure>
           <p>{blogPost.author.name}</p>
         </div>
+        <TagWrapper>
+          {blogPost.tags.map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
+        </TagWrapper>
       </div>
       <div
         className="text-base"

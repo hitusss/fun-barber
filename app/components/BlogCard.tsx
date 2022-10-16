@@ -1,17 +1,21 @@
 import { Link } from "@remix-run/react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { BlogPost } from "~/types";
+import { TagWrapper, Tag } from "~/components/Tags";
 
 type BlogCardProps = Omit<BlogPost, "content">;
 
-export function BlogCard({ title, heroImage, date, author }: BlogCardProps) {
+export function BlogCard({
+  title,
+  slag,
+  tags,
+  heroImage,
+  date,
+  author,
+}: BlogCardProps) {
   const reducedMotion = useReducedMotion();
   return (
-    <Link
-      key={title}
-      to={`/blog/${title.toLowerCase().replace(/\s/g, "-")}`}
-      aria-label={`blog post: ${title}`}
-    >
+    <Link key={title} to={`/blog/${slag}`} aria-label={`blog post: ${title}`}>
       <motion.article
         initial={{ opacity: 0.5, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -20,7 +24,7 @@ export function BlogCard({ title, heroImage, date, author }: BlogCardProps) {
           duration: reducedMotion ? 0 : 0.5,
         }}
         whileHover={{ scale: 1.05 }}
-        className="flex h-96 w-72 flex-col gap-4 overflow-hidden rounded-lg"
+        className="flex h-auto w-72 flex-col gap-4 overflow-hidden rounded-lg"
       >
         <figure>
           <picture>
@@ -67,6 +71,11 @@ export function BlogCard({ title, heroImage, date, author }: BlogCardProps) {
             </figure>
             <p>{author.name}</p>
           </div>
+          <TagWrapper>
+            {tags.map((tag) => (
+              <Tag key={tag}>{tag}</Tag>
+            ))}
+          </TagWrapper>
         </div>
       </motion.article>
     </Link>

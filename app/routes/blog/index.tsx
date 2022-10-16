@@ -4,7 +4,6 @@ import type { MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import type { BlogPost } from "~/types";
-import BlogImg from "~/image/blog.jpg";
 import { Heading } from "~/components/Heading";
 import { BlogCard } from "~/components/BlogCard";
 import { contentful } from "~/services/contentful.server";
@@ -20,6 +19,9 @@ export async function loader() {
     blogPostsCollection {
       items {
         title
+        slag
+        tags
+        description
         heroImage {
           url
         }
@@ -50,16 +52,23 @@ export default function BlogPage() {
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-10 py-12">
       <div className="flex w-full items-center justify-center gap-9">
-        <motion.img
-          initial={{ opacity: 0.5, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: reducedMotion ? 0 : 0.5,
-          }}
-          src={BlogImg}
-          alt=""
-          className="hidden aspect-square h-80 border-4 border-brand object-cover drop-shadow-lg lg:block"
-        />
+        <figure className="aspect-square h-80">
+          <picture>
+            <source srcSet="images/blog.webp" type="image/webp" />
+            <source srcSet="images/blog.jpg" type="image/jpeg" />
+            <motion.img
+              initial={{ opacity: 0.5, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: reducedMotion ? 0 : 0.5,
+              }}
+              viewport={{ once: true, margin: "-15%" }}
+              src="images/blog.jpg"
+              alt=""
+              className="hidden h-full w-full border-4 border-brand object-cover drop-shadow-lg lg:block"
+            />
+          </picture>
+        </figure>
         <div className="flex flex-col items-center gap-6 px-4 lg:items-start">
           <Heading>Blog</Heading>
           <p className="max-w-prose">
@@ -80,17 +89,15 @@ export default function BlogPage() {
       <div className="flex flex-wrap justify-center gap-6">
         <AnimatePresence>
           {blogPosts
-            .filter((post) =>
-              post.title.toLowerCase().match(filter.toLowerCase())
+            .filter(
+              (post) =>
+                post.title.toLowerCase().match(filter.toLowerCase()) ||
+                filter
+                  .split(" ")
+                  .reduce((acc, cur) => acc || post.tags.includes(cur), false)
             )
             .map((blogPost) => (
-              <BlogCard
-                key={blogPost.title}
-                title={blogPost.title}
-                date={blogPost.date}
-                author={blogPost.author}
-                heroImage={blogPost.heroImage}
-              />
+              <BlogCard key={blogPost.title} {...blogPost} />
             ))}
         </AnimatePresence>
       </div>

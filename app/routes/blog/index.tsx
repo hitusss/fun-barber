@@ -19,6 +19,9 @@ export async function loader() {
     blogPostsCollection {
       items {
         title
+        slag
+        tags
+        description
         heroImage {
           url
         }
@@ -86,17 +89,15 @@ export default function BlogPage() {
       <div className="flex flex-wrap justify-center gap-6">
         <AnimatePresence>
           {blogPosts
-            .filter((post) =>
-              post.title.toLowerCase().match(filter.toLowerCase())
+            .filter(
+              (post) =>
+                post.title.toLowerCase().match(filter.toLowerCase()) ||
+                filter
+                  .split(" ")
+                  .reduce((acc, cur) => acc || post.tags.includes(cur), false)
             )
             .map((blogPost) => (
-              <BlogCard
-                key={blogPost.title}
-                title={blogPost.title}
-                date={blogPost.date}
-                author={blogPost.author}
-                heroImage={blogPost.heroImage}
-              />
+              <BlogCard key={blogPost.title} {...blogPost} />
             ))}
         </AnimatePresence>
       </div>

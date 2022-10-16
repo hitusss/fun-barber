@@ -26,6 +26,9 @@ export type GalleryImage = {
 
 export type BlogPost = {
   title: string;
+  slag: string;
+  tags: string[];
+  description: string;
   heroImage: {
     url: string;
   };

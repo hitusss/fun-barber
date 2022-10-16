@@ -1,4 +1,5 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import {
   Link,
   Links,
@@ -8,6 +9,7 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
+  useLoaderData,
   useLocation,
 } from "@remix-run/react";
 
@@ -15,6 +17,8 @@ import { MainWrapper } from "~/components/MainWrapper";
 import { Header } from "~/components/Header";
 import { Footer } from "~/components/Footer";
 import { ErrorComponent } from "~/components/ErrorComponent";
+import { getDomainUrl, getSocialMetas, getUrl } from "~/utils";
+import { getEnv } from "~/utils/env.server";
 
 import mainStylesheetUrl from "~/styles/main.css";
 import tailwindStylesheetUrl from "~/styles/tailwind.css";
@@ -27,16 +31,16 @@ export const links: LinksFunction = () => {
       rel: "icon",
       type: "image/png",
       sizes: "192X192",
-      href: "/favicons/logo192.png",
+      href: "/images/android-chrome-192.png",
     },
     {
       rel: "icon",
       type: "image/png",
       sizes: "512x512",
-      href: "/favicons/logo512.png",
+      href: "/images/android-chrome-512.png",
     },
-    { rel: "manifest", href: "/manifest.json" },
     { rel: "icon", href: "/favicon.ico" },
+    { rel: "manifest", href: "/manifest.webmanifest" },
     {
       rel: "stylesheet",
       href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
@@ -47,14 +51,37 @@ export const links: LinksFunction = () => {
   ];
 };
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  viewport: "width=device-width,initial-scale=1,viewport-fit=cover",
-  title: "Fun Barber",
-  description: "FBarber barber shop official website.",
-});
+export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
+  const { requestInfo } = data;
+  return {
+    viewport: "width=device-width,initial-scale=1,viewport-fit=cover",
+    "theme-color": "#FFFEFE",
+    ...getSocialMetas({
+      url: getUrl(requestInfo),
+    }),
+  };
+};
+
+export type LoaderData = {
+  ENV: ReturnType<typeof getEnv>;
+  requestInfo: {
+    origin: string;
+    path: string;
+  };
+};
+
+export function loader({ request }: LoaderArgs) {
+  return json<LoaderData>({
+    ENV: getEnv(),
+    requestInfo: {
+      origin: getDomainUrl(request),
+      path: new URL(request.url).pathname,
+    },
+  });
+}
 
 export default function App() {
+  const data = useLoaderData();
   return (
     <html lang="en" className="h-full scroll-smooth">
       <head>
@@ -72,6 +99,11 @@ export default function App() {
         <Footer />
         <ScrollRestoration />
         <Scripts />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
+          }}
+        />
         <LiveReload />
       </body>
     </html>

@@ -4,9 +4,11 @@ import type { MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import type { BlogPost } from "~/types";
+import type { LoaderData as RootLoaderData } from "~/root";
 import { Heading } from "~/components/Heading";
 import { BlogCard } from "~/components/BlogCard";
 import { contentful } from "~/services/contentful.server";
+import { getSocialMetas, getUrl } from "~/utils";
 
 type LoaderData = {
   blogPosts: Omit<BlogPost, "content">[];
@@ -41,9 +43,17 @@ export async function loader() {
   });
 }
 
-export const meta: MetaFunction = () => ({
-  title: "Blog | Fun Barber",
-});
+export const meta: MetaFunction = ({ parentsData }) => {
+  const { requestInfo } = parentsData.root as RootLoaderData;
+  return {
+    ...getSocialMetas({
+      title: "Blog | Fun Barber",
+      description: "Some cool blog posts about barber's world.",
+      keywords: "barber, barber shop, fun barber, blog",
+      url: getUrl(requestInfo),
+    }),
+  };
+};
 
 export default function BlogPage() {
   const [filter, setFilter] = React.useState("");

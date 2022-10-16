@@ -3,7 +3,9 @@ import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { BlogPost } from "~/types";
+import type { LoaderData as RootLoaderData } from "~/root";
 import { contentful } from "~/services/contentful.server";
+import { getSocialMetas, getUrl } from "~/utils";
 import { TagWrapper, Tag } from "~/components/Tags";
 
 type LoaderData = {
@@ -43,9 +45,17 @@ export async function loader({ params }: LoaderArgs) {
   });
 }
 
-export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
+export const meta: MetaFunction = ({ data, parentsData }) => {
+  const { requestInfo } = parentsData.root as RootLoaderData;
+  const title = `${data.blogPost.title} | Fun Barber`;
   return {
-    title: `${data.blogPost.title} | Fun Barber`,
+    ...getSocialMetas({
+      title,
+      description: data.blogPost.description,
+      keywords: data.blogPost.tags.join(", "),
+      url: getUrl(requestInfo),
+      image: data.blogPost.heroImage.url,
+    }),
   };
 };
 

@@ -13,6 +13,7 @@ import { z } from "zod";
 import { makeDomainFunction } from "remix-domains";
 import { performMutation, Form } from "remix-forms";
 import type { Service, Barber } from "~/types";
+import type { LoaderData as RootLoaderData } from "~/root";
 import { BookingCalendar } from "~/routes/resource/bookingCalendar";
 import { Select } from "~/components/Select";
 import { Input } from "~/components/Input";
@@ -20,7 +21,7 @@ import { Button } from "~/components/Button";
 import { ErrorComponent } from "~/components/ErrorComponent";
 import { contentful } from "~/services/contentful.server";
 import { createBooking } from "~/models/booking.server";
-import { getAllSearchParams } from "~/utils";
+import { getAllSearchParams, getSocialMetas, getUrl } from "~/utils";
 
 type LoaderData = {
   barbers: Pick<Barber, "name">[];
@@ -85,9 +86,17 @@ export async function loader() {
   });
 }
 
-export const meta: MetaFunction = () => ({
-  title: "Booking | Fun Barber",
-});
+export const meta: MetaFunction = ({ parentsData }) => {
+  const { requestInfo } = parentsData.root as RootLoaderData;
+  return {
+    ...getSocialMetas({
+      title: "Booking | Fun Barber",
+      description: "Book your visit in our barber shop.",
+      keywords: "barber, barber shop, fun barber, booking",
+      url: getUrl(requestInfo),
+    }),
+  };
+};
 
 export default function Booking() {
   const bookingFetcher = useFetcher();

@@ -51,6 +51,7 @@ export const meta: MetaFunction = ({ parentsData }) => {
       description: "Some cool blog posts about barber's world.",
       keywords: "barber, barber shop, fun barber, blog",
       url: getUrl(requestInfo),
+      origin: requestInfo?.origin ?? "",
     }),
   };
 };

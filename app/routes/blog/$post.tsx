@@ -4,9 +4,10 @@ import { json } from "@remix-run/node";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { BlogPost } from "~/types";
 import type { LoaderData as RootLoaderData } from "~/root";
+import { TagWrapper, Tag } from "~/components/Tags";
 import { contentful } from "~/services/contentful.server";
 import { getSocialMetas, getUrl } from "~/utils";
-import { TagWrapper, Tag } from "~/components/Tags";
+import { getGenericSocialImage } from "~/images";
 
 type LoaderData = {
   blogPost: BlogPost;
@@ -53,8 +54,14 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
       title,
       description: data.blogPost.description,
       keywords: data.blogPost.tags.join(", "),
+      origin: requestInfo?.origin ?? "",
       url: getUrl(requestInfo),
-      image: data.blogPost.heroImage.url,
+      image: getGenericSocialImage({
+        origin: requestInfo?.origin ?? "",
+        url: getUrl(requestInfo),
+        words: data.blogPost.title,
+        featuredImage: data.blogPost.heroImage.url,
+      }),
     }),
   };
 };

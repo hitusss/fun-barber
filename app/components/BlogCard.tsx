@@ -7,7 +7,7 @@ type BlogCardProps = Omit<BlogPost, "content">;
 
 export function BlogCard({
   title,
-  slag,
+  slug,
   tags,
   heroImage,
   date,
@@ -15,7 +15,7 @@ export function BlogCard({
 }: BlogCardProps) {
   const reducedMotion = useReducedMotion();
   return (
-    <Link key={title} to={`/blog/${slag}`} aria-label={`blog post: ${title}`}>
+    <Link key={title} to={`/blog/${slug}`} aria-label={`blog post: ${title}`}>
       <motion.article
         initial={{ opacity: 0.5, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}

@@ -162,7 +162,7 @@
     "items": [
       {
         "title": "Example blog post 4",
-        "slag": "example-blog-post-4",
+        "slug": "example-blog-post-4",
         "tags": ["tag2", "tag5"],
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.",
         "heroImage": {
@@ -281,7 +281,7 @@
       },
       {
         "title": "Example blog post 3",
-        "slag": "example-blog-post-3",
+        "slug": "example-blog-post-3",
         "tags": ["tag1", "tag8", "tag3", "tag7", "tag12"],
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.",
         "heroImage": {
@@ -400,7 +400,7 @@
       },
       {
         "title": "Example blog post 2",
-        "slag": "example-blog-post-2",
+        "slug": "example-blog-post-2",
         "tags": ["tag2", "tag6", "tag4"],
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.",
         "heroImage": {
@@ -519,7 +519,7 @@
       },
       {
         "title": "Example blog post",
-        "slag": "example-blog-post",
+        "slug": "example-blog-post",
         "tags": ["tag1", "tag2", "tag3"],
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.",
         "heroImage": {

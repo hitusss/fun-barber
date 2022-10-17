@@ -21,7 +21,7 @@ export async function loader() {
     blogPostsCollection {
       items {
         title
-        slag
+        slug
         tags
         description
         heroImage {

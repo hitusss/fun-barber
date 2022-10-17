@@ -93,6 +93,7 @@ export const meta: MetaFunction = ({ parentsData }) => {
       title: "Booking | Fun Barber",
       description: "Book your visit in our barber shop.",
       keywords: "barber, barber shop, fun barber, booking",
+      origin: requestInfo?.origin ?? "",
       url: getUrl(requestInfo),
     }),
   };

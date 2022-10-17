@@ -57,6 +57,7 @@ export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
     viewport: "width=device-width,initial-scale=1,viewport-fit=cover",
     "theme-color": "#FFFEFE",
     ...getSocialMetas({
+      origin: requestInfo?.origin ?? "",
       url: getUrl(requestInfo),
     }),
   };

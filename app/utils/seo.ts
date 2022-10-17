@@ -1,13 +1,22 @@
+import { getGenericSocialImage } from "~/images";
+
 export function getSocialMetas({
   url,
   title = "Fun Barber",
   description = "One of the best barber show nears you.",
-  image = `https://funbarber.hitus.me/images/featuredImage.jpg`,
+  origin,
+  image = getGenericSocialImage({
+    origin,
+    url,
+    words: description,
+    featuredImage: `${origin}/images/featuredImage.png`,
+  }),
   keywords = "barber shop, barber, fun barber",
 }: {
   url: string;
   title?: string;
   description?: string;
+  origin: string;
   image?: string;
   keywords?: string;
 }) {

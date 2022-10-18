@@ -10,7 +10,7 @@ import type { ActionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
-import { makeDomainFunction } from "remix-domains";
+import { makeDomainFunction } from "domain-functions";
 import { performMutation, Form } from "remix-forms";
 import type { Service, Barber } from "~/types";
 import type { LoaderData as RootLoaderData } from "~/root";

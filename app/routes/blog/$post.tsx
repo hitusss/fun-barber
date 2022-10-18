@@ -6,8 +6,7 @@ import type { BlogPost } from "~/types";
 import type { LoaderData as RootLoaderData } from "~/root";
 import { TagWrapper, Tag } from "~/components/Tags";
 import { contentful } from "~/services/contentful.server";
-import { getSocialMetas, getUrl } from "~/utils";
-import { getGenericSocialImage } from "~/images";
+import { getSocialMetas, getUrl, getGenericSocialImage } from "~/utils";
 
 type LoaderData = {
   blogPost: BlogPost;

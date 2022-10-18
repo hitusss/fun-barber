@@ -154,23 +154,3 @@ export async function generateImage({
 
   return canvas.toBuffer("image/png");
 }
-
-export function getGenericSocialImage({
-  origin,
-  words,
-  featuredImage: img,
-  url,
-}: {
-  origin: string;
-  words: string;
-  featuredImage: string;
-  url: string;
-}) {
-  const params = new URLSearchParams({
-    type: "1",
-    words,
-    img,
-    url,
-  });
-  return `${origin}/social-image?${params.toString()}`;
-}

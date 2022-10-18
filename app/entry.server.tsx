@@ -5,7 +5,7 @@ import { Response } from "@remix-run/node";
 import type { EntryContext, Headers } from "@remix-run/node";
 import isbot from "isbot";
 import { getDomainUrl } from "~/utils";
-import { generateImage } from "~/images";
+import { generateImage } from "~/images.server";
 
 const ABORT_DELAY = 5000;
 

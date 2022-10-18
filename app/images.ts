@@ -1,5 +1,10 @@
-import { createCanvas, loadImage } from "canvas";
+import { createCanvas, loadImage, registerFont } from "canvas";
 import type { CanvasRenderingContext2D, Image } from "canvas";
+
+registerFont("public/fonts/LibreBaskerville-Bold.otf", {
+  family: "LibreBaskerville",
+  weight: "700",
+});
 
 const getLines = (
   ctx: CanvasRenderingContext2D,
@@ -102,9 +107,9 @@ export async function generateImage({
   words: string;
   featuredImage: string;
 }) {
-  const [width, height] = [1920, 1080];
-  const margin = 128;
-  const fontSize = 64;
+  const [width, height] = [1280, 720];
+  const margin = 64;
+  const fontSize = 32;
 
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext("2d");
@@ -119,7 +124,7 @@ export async function generateImage({
 
   ctx.drawImage(logo, margin, margin, logo.width, logo.height);
 
-  ctx.font = `bold ${fontSize}px Libre Baskerville`;
+  ctx.font = `bold ${fontSize}px LibreBaskerville`;
   const titleLines = getLines(ctx, words, width / 2 - margin * 2);
   const lineHeight = fontSize * 1.2;
   const textHeight = titleLines.length * lineHeight;
@@ -161,7 +166,6 @@ export function getGenericSocialImage({
   featuredImage: string;
   url: string;
 }) {
-  console.log(origin);
   const params = new URLSearchParams({
     type: "1",
     words,

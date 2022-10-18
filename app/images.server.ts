@@ -1,7 +1,7 @@
 import { createCanvas, loadImage, registerFont } from "canvas";
 import type { CanvasRenderingContext2D, Image } from "canvas";
 
-registerFont("public/fonts/LibreBaskerville-Bold.otf", {
+registerFont("public/fonts/LibreBaskerville-Bold.ttf", {
   family: "LibreBaskerville",
   weight: "700",
 });

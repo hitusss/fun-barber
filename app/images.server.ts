@@ -148,8 +148,8 @@ export async function generateImage({
     y: margin,
     w: width / 2 - margin,
     h: height - 2 * margin,
-    offsetX: 1,
-    offsetY: 1,
+    offsetX: 0.5,
+    offsetY: 0.5,
   });
 
   return canvas.toBuffer("image/png");

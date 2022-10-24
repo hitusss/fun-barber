@@ -4,7 +4,32 @@ import { InstagramIcon, TwitterIcon, FacebookIcon } from "~/components/Icons";
 export function Footer() {
   return (
     <footer className="flex w-full flex-col items-center justify-around gap-4 bg-brand py-10 lg:flex-row">
-      <Logo />
+      <div className="flex flex-col gap-8">
+        <Logo />
+        <div className="flex flex-wrap gap-6 fill-white">
+          <a
+            href="https://instagram.com/funbarber___"
+            aria-label="funbarber on instagram"
+            className="flex items-center gap-2"
+          >
+            <InstagramIcon />
+          </a>
+          <a
+            href="https://twitter.com/funbarber___"
+            aria-label="funbarber on twitter"
+            className="flex items-center gap-2 fill-white"
+          >
+            <TwitterIcon />
+          </a>
+          <a
+            href="https://facebook.com/funbarber___"
+            aria-label="funbarber on facebook"
+            className="flex items-center gap-2"
+          >
+            <FacebookIcon />
+          </a>
+        </div>
+      </div>
       <div tabIndex={0} className="text-center text-sm lg:text-left">
         <h2 className="mb-2 text-2xl">Contact</h2>
         <p>
@@ -22,32 +47,6 @@ export function Footer() {
         <p>Monday - Friday 9am - 5pm</p>
         <p>Saturday 9am - 3pm</p>
         <p>Sunday CLOSED</p>
-      </div>
-      <div className="fill-white text-center text-sm lg:text-left">
-        <h2 className="mb-2 text-2xl">Socials</h2>
-        <div className="flex flex-col gap-3">
-          <a
-            href="https://instagram.com/funbarber___"
-            aria-label="funbarber on instagram"
-            className="flex items-center gap-2"
-          >
-            <InstagramIcon /> funbarber
-          </a>
-          <a
-            href="https://twitter.com/funbarber___"
-            aria-label="funbarber on twitter"
-            className="flex items-center gap-2 fill-white"
-          >
-            <TwitterIcon /> funbarber
-          </a>
-          <a
-            href="https://facebook.com/funbarber___"
-            aria-label="funbarber on facebook"
-            className="flex items-center gap-2"
-          >
-            <FacebookIcon /> funbarber
-          </a>
-        </div>
       </div>
     </footer>
   );

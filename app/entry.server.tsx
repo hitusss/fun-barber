@@ -6,6 +6,7 @@ import type { EntryContext, Headers } from "@remix-run/node";
 import isbot from "isbot";
 import { getDomainUrl } from "~/utils";
 import { generateImage } from "~/images.server";
+import { getSitemapXml } from "~/utils/sitemap.server";
 
 const ABORT_DELAY = 5000;
 
@@ -31,6 +32,18 @@ export default async function handleRequest(
         "Cache-Control": "public, max-age=2419200",
       },
     });
+  }
+
+  if (url.pathname === "/sitemap.xml") {
+    const sitemap = await getSitemapXml(request, remixContext);
+
+    if (sitemap)
+      return new Response(sitemap, {
+        headers: {
+          "Content-Type": "application/xml",
+          "Content-Length": String(Buffer.byteLength(sitemap)),
+        },
+      });
   }
 
   const callbackName = isbot(request.headers.get("user-agent"))

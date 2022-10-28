@@ -161,6 +161,14 @@
   "blogPostsCollection": {
     "items": [
       {
+        "sys": {
+          "id": "5lD1imF2JglX0ifWXdWaRm",
+          "spaceId": "kjp2g5518fv4",
+          "environmentId": "9ec512eb-840c-41cb-aa30-eb6a2a699bf8",
+          "publishedAt": "2022-10-16T10:51:26.598Z",
+          "firstPublishedAt": "2022-10-16T10:51:26.598Z",
+          "publishedVersion": 7
+        },
         "title": "Example blog post 4",
         "slug": "example-blog-post-4",
         "tags": ["tag2", "tag5"],
@@ -280,6 +288,14 @@
         }
       },
       {
+        "sys": {
+          "id": "5lD1imF2JglX0ifWXdWaRm",
+          "spaceId": "kjp2g5518fv4",
+          "environmentId": "9ec512eb-840c-41cb-aa30-eb6a2a699bf8",
+          "publishedAt": "2022-10-16T10:51:26.598Z",
+          "firstPublishedAt": "2022-10-16T10:51:26.598Z",
+          "publishedVersion": 7
+        },
         "title": "Example blog post 3",
         "slug": "example-blog-post-3",
         "tags": ["tag1", "tag8", "tag3", "tag7", "tag12"],
@@ -399,6 +415,14 @@
         }
       },
       {
+        "sys": {
+          "id": "5lD1imF2JglX0ifWXdWaRm",
+          "spaceId": "kjp2g5518fv4",
+          "environmentId": "9ec512eb-840c-41cb-aa30-eb6a2a699bf8",
+          "publishedAt": "2022-10-16T10:51:26.598Z",
+          "firstPublishedAt": "2022-10-16T10:51:26.598Z",
+          "publishedVersion": 7
+        },
         "title": "Example blog post 2",
         "slug": "example-blog-post-2",
         "tags": ["tag2", "tag6", "tag4"],
@@ -518,6 +542,14 @@
         }
       },
       {
+        "sys": {
+          "id": "5lD1imF2JglX0ifWXdWaRm",
+          "spaceId": "kjp2g5518fv4",
+          "environmentId": "9ec512eb-840c-41cb-aa30-eb6a2a699bf8",
+          "publishedAt": "2022-10-16T10:51:26.598Z",
+          "firstPublishedAt": "2022-10-16T10:51:26.598Z",
+          "publishedVersion": 7
+        },
         "title": "Example blog post",
         "slug": "example-blog-post",
         "tags": ["tag1", "tag2", "tag3"],

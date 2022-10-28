@@ -3,12 +3,18 @@ import { useLoaderData } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
-import type { BlogPost } from "~/types";
+import type { BlogPost, PageHandle } from "~/types";
 import type { LoaderData as RootLoaderData } from "~/root";
 import { Heading } from "~/components/Heading";
 import { BlogCard } from "~/components/BlogCard";
 import { contentful } from "~/services/contentful.server";
 import { getSocialMetas, getUrl } from "~/utils";
+
+const handleId = "blog";
+export const handle: PageHandle = {
+  id: handleId,
+  getSitemapEntries: () => [{ route: `/blog`, priority: 0.7 }],
+};
 
 type LoaderData = {
   blogPosts: Omit<BlogPost, "content">[];

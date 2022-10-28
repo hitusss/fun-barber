@@ -1,6 +1,8 @@
 import type { EntryContext } from "@remix-run/node";
 import { isEqual } from "lodash";
+import type { BlogPost, PageHandle } from "~/types";
 import { getDomainUrl, removeTrailingSlash, typedBoolean } from "~/utils";
+import { contentful } from "~/services/contentful.server";
 
 type SitemapEntry = {
   route: string;
@@ -38,6 +40,11 @@ export async function getSitemapXml(
       Object.entries(remixContext.routeModules).map(async ([id, mod]) => {
         if (id === "root") return;
         if (id.startsWith("routes/_")) return;
+
+        const handle = mod.handle as PageHandle | undefined;
+        if (handle?.getSitemapEntries) {
+          return handle.getSitemapEntries(request);
+        }
 
         // exclude resource routes from the sitemap
         // (these are an opt-in via the getSitemapEntries method)
@@ -99,6 +106,28 @@ export async function getSitemapXml(
       sitemapEntries.push(entry);
     }
   }
+
+  /* Get all blog post form cms and add to sitemap */
+  const {
+    blogPostsCollection: { items: blogPosts },
+  } = await contentful(`{
+    blogPostsCollection {
+      items {
+        slug
+        sys {
+          publishedAt
+        }
+      }
+    }
+  }`);
+  blogPosts.map((post: BlogPost) =>
+    sitemapEntries.push({
+      route: `/blog/${post.slug}`,
+      priority: 0.3,
+      lastmod: post.sys.publishedAt,
+      changefreq: "weekly",
+    })
+  );
 
   return `
 <?xml version="1.0" encoding="UTF-8"?>

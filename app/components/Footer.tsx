@@ -1,5 +1,10 @@
 import { Logo } from "~/components/Logo";
-import { InstagramIcon, TwitterIcon, FacebookIcon } from "~/components/Icons";
+import {
+  InstagramIcon,
+  TwitterIcon,
+  FacebookIcon,
+  RSSIcon,
+} from "~/components/Icons";
 
 export function Footer() {
   return (
@@ -27,6 +32,13 @@ export function Footer() {
             className="flex items-center gap-2"
           >
             <FacebookIcon />
+          </a>
+          <a
+            href="https://funbarber.hitus.me/blog/rss.xml"
+            aria-label="funbarber on facebook"
+            className="flex items-center gap-2"
+          >
+            <RSSIcon />
           </a>
         </div>
       </div>

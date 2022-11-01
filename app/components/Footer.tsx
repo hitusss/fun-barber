@@ -11,7 +11,7 @@ export function Footer() {
     <footer className="flex w-full flex-col items-center justify-around gap-4 bg-brand py-10 lg:flex-row">
       <div className="flex flex-col gap-8">
         <Logo />
-        <div className="flex flex-wrap gap-6 fill-white">
+        <div className="flex flex-wrap gap-6 fill-white text-white">
           <a
             href="https://instagram.com/funbarber___"
             aria-label="funbarber on instagram"
@@ -35,8 +35,8 @@ export function Footer() {
           </a>
           <a
             href="https://funbarber.hitus.me/blog/rss.xml"
-            aria-label="funbarber on facebook"
-            className="flex items-center gap-2"
+            aria-label="funbarber blog rss"
+            className="flex items-center gap-2 fill-white"
           >
             <RSSIcon />
           </a>

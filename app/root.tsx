@@ -39,6 +39,11 @@ export const links: LinksFunction = () => {
       sizes: "512x512",
       href: "/images/android-chrome-512.png",
     },
+    {
+      rel: "apple-touch-icon",
+      sizes: "180x180",
+      href: "/images/apple-touch-icon.png",
+    },
     { rel: "icon", href: "/favicon.ico" },
     { rel: "manifest", href: "/manifest.webmanifest" },
     {

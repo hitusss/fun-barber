@@ -21,9 +21,11 @@ export function Hero() {
             The Best Version <br />
             Of Yourself
           </h1>
+            <Link to="booking">
           <Button size="large">
-            <Link to="booking">Book Now</Link>
+              Book Now
           </Button>
+              </Link>
         </motion.div>
         <figure className="h-4/5">
           <picture>

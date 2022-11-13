@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { LoaderArgs } from "@remix-run/node";
+import type { LoaderArgs, SerializeFrom } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher, useSearchParams } from "@remix-run/react";
 import type { Moment } from "moment";
@@ -24,7 +24,7 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export function BookingCalendar({ barber }: { barber: string }) {
-  const bookingCalendarFetcher = useFetcher<Pick<Booking, "date" | "hour">[]>();
+  const bookingCalendarFetcher = useFetcher<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const showSpinner = useSpinDelay(bookingCalendarFetcher.state !== "idle", {
     delay: 200,
@@ -263,7 +263,7 @@ function CalendarBody({
 }: {
   date: moment.Moment;
   handleDaySelect: (newDay: string) => void;
-  booked?: Pick<Booking, "date" | "hour">[];
+  booked?: SerializeFrom<Pick<Booking, "date" | "hour">[]>;
 }) {
   const currentDate = moment().format("YYYY-MM");
   const currentDay = moment().date();
@@ -341,7 +341,7 @@ function HoursGrid({
 }: {
   date: moment.Moment;
   handleHourSelect: (newHour: string) => void;
-  booked?: Pick<Booking, "date" | "hour">[];
+  booked?: SerializeFrom<Pick<Booking, "date" | "hour">[]>;
 }) {
   const isSat = date.format("ddd") === "Sat";
   const workingHours = isSat ? 6 : 8;

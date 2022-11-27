@@ -1,5 +1,7 @@
 # Fun Barber
 
+### [Live Preview](https://funbarber.hitus.me)
+
 [![Build Status][build-badge]][build]
 [![GPL 3.0 License][license-badge]][license]
 

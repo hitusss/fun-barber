@@ -98,6 +98,17 @@ export default function App() {
         </noscript>
       </head>
       <body className="bg-white font-serif text-paragraph text-white transition duration-500">
+        <span className="flex items-center justify-center gap-1 bg-red-500 px-3 py-1 text-base">
+          This is only preview for
+          <a
+            href="https://github.com/Hitusss/fun-barber"
+            target="_blank"
+            className="text-blue-600 underline"
+            rel="noreferrer"
+          >
+            github.com/Hitusss/fun-barber
+          </a>
+        </span>
         <Header />
         <MainWrapper>
           <Outlet />

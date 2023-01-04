@@ -10,8 +10,6 @@ import type { ActionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
-import { makeDomainFunction } from "domain-functions";
-import { performMutation, Form } from "remix-forms";
 import type { Service, Barber } from "~/types";
 import type { LoaderData as RootLoaderData } from "~/root";
 import { BookingCalendar } from "~/routes/resource/bookingCalendar";
@@ -31,10 +29,10 @@ type LoaderData = {
 const bookingSchema = z.object({
   barber: z.string(),
   service: z.string(),
-  year: z.string().optional(),
-  month: z.string().optional(),
-  day: z.string().optional(),
-  hour: z.string().optional(),
+  year: z.string(),
+  month: z.string(),
+  day: z.string(),
+  hour: z.string(),
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email(),
@@ -46,20 +44,31 @@ const bookingSchema = z.object({
   }),
 });
 
-export const bookingMutation = makeDomainFunction(bookingSchema)(
-  async (values) => await createBooking(values)
-);
-
 export async function action({ request }: ActionArgs) {
-  const result = await performMutation({
-    request,
-    schema: bookingSchema,
-    mutation: bookingMutation,
-  });
+  const formData = await request.formData();
+  const dataObj = Object.fromEntries(formData);
 
-  if (!result.success) return json(result, 400);
+  const validData = bookingSchema.safeParse(dataObj);
+  if (!validData.success) {
+    const errors: Record<string, string[]> = {};
+    validData.error.errors.map((e) =>
+      e.path.forEach((p) => {
+        if (errors[p]) {
+          errors[p].push(e.message);
+        } else {
+          errors[p] = [e.message];
+        }
+      })
+    );
+    return json({ ok: false, errors });
+  }
 
-  return json({ ...result, ok: true });
+  try {
+    const result = await createBooking(validData.data);
+    return json({ ...result, ok: true });
+  } catch (error) {
+    return json(error, 400);
+  }
 }
 
 export async function loader() {
@@ -135,13 +144,17 @@ export default function Booking() {
     }
   }, [duration, isSuccess]);
 
+  React.useEffect(() => {
+    const keys = Object.keys(bookingFetcher.data?.errors || {});
+    if (keys.length > 0) {
+      (
+        document.querySelector(`input[name=${keys[0]}]`) as HTMLInputElement
+      )?.focus();
+    }
+  }, [bookingFetcher.data?.errors]);
+
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center justify-center">
-      <noscript>
-        <ErrorComponent size="large">
-          You need to enable JavaScript to use this website.
-        </ErrorComponent>
-      </noscript>
       <AnimatePresence>
         <motion.div
           key="bookingForm"
@@ -152,131 +165,99 @@ export default function Booking() {
             duration,
           }}
         >
-          <Form
-            schema={bookingSchema}
-            fetcher={bookingFetcher}
-            errorComponent={ErrorComponent}
+          <bookingFetcher.Form
             method="post"
             className="flex flex-col items-center gap-4"
           >
-            {({ Field, Errors, register }) => (
-              <>
-                <fieldset className="grid w-3/4 grid-cols-1 md:grid-cols-2 md:gap-8">
-                  <Field name="barber">
-                    {({ Errors }) => (
-                      <>
-                        <Select
-                          {...register("barber")}
-                          options={barbers.map(({ name }) => name)}
-                          defaultValue={barber}
-                          onChange={(e) =>
-                            setSearchParams({
-                              ...getAllSearchParams(searchParams),
-                              barber: e.target.value,
-                            })
-                          }
-                          label="Barber"
-                        />
-                        <Errors />
-                      </>
-                    )}
-                  </Field>
-                  <Field name="service">
-                    {({ Errors }) => (
-                      <>
-                        <Select
-                          {...register("service")}
-                          options={services.map(
-                            ({ name, price }) => `${name} (${price}$)`
-                          )}
-                          defaultValue={service}
-                          onChange={(e) =>
-                            setSearchParams({
-                              ...getAllSearchParams(searchParams),
-                              service: e.target.value,
-                            })
-                          }
-                          label="Service"
-                        />
-                        <Errors />
-                      </>
-                    )}
-                  </Field>
-                </fieldset>
-
-                <BookingCalendar barber={barber} />
-
-                <fieldset className="grid w-4/5 grid-cols-1 rounded-lg bg-white/5 p-10 md:grid-cols-2 md:gap-8">
-                  <Field name="firstName">
-                    {({ Errors }) => (
-                      <>
-                        <Input label="First name" {...register("firstName")} />
-                        <Errors />
-                      </>
-                    )}
-                  </Field>
-                  <Field name="lastName">
-                    {({ Errors }) => (
-                      <>
-                        <Input label="Last name" {...register("lastName")} />
-                        <Errors />
-                      </>
-                    )}
-                  </Field>
-                  <Field name="email">
-                    {({ Errors }) => (
-                      <>
-                        <Input
-                          label="Email"
-                          type="email"
-                          {...register("email")}
-                        />
-                        <Errors />
-                      </>
-                    )}
-                  </Field>
-                  <Field name="phone">
-                    {({ Errors }) => (
-                      <>
-                        <Input
-                          label="Phone"
-                          type="tel"
-                          {...register("phone")}
-                        />
-                        <Errors />
-                      </>
-                    )}
-                  </Field>
-                </fieldset>
-                <Field name="privacyPolicy">
-                  {({ Errors }) => (
-                    <>
-                      <label className="flex items-center gap-2 text-sm">
-                        <input
-                          type="checkbox"
-                          value="privacyPolicy"
-                          {...register("privacyPolicy")}
-                        />{" "}
-                        I accept the{" "}
-                        <Link to="/privacy" className="text-blue-600 underline">
-                          Privacy Policy
-                        </Link>
-                      </label>
-                      <Errors />
-                    </>
+            <fieldset className="grid w-3/4 grid-cols-1 md:grid-cols-2 md:gap-8">
+              <div>
+                <Select
+                  name="barber"
+                  options={barbers.map(({ name }) => name)}
+                  defaultValue={barber}
+                  onChange={(e) =>
+                    setSearchParams({
+                      ...getAllSearchParams(searchParams),
+                      barber: e.target.value,
+                    })
+                  }
+                  label="Barber"
+                  required
+                />
+                <ErrorComponent>
+                  {bookingFetcher.data?.errors?.["barber"]?.[0]}
+                </ErrorComponent>
+              </div>
+              <div>
+                <Select
+                  name="service"
+                  options={services.map(
+                    ({ name, price }) => `${name} (${price}$)`
                   )}
-                </Field>
-                <Errors />
-                <Button
-                  className="my-4 px-16"
-                  type="submit"
-                  disabled={Boolean(bookingFetcher.submission)}
-                >
-                  {bookingFetcher.submission ? "Booking..." : "Book"}
-                </Button>
-              </>
-            )}
-          </Form>
+                  defaultValue={service}
+                  onChange={(e) =>
+                    setSearchParams({
+                      ...getAllSearchParams(searchParams),
+                      service: e.target.value,
+                    })
+                  }
+                  label="Service"
+                  required
+                />
+                <ErrorComponent>
+                  {bookingFetcher.data?.errors?.["service"]?.[0]}
+                </ErrorComponent>
+              </div>
+            </fieldset>
+            <BookingCalendar barber={barber} />
+            <fieldset className="grid w-4/5 grid-cols-1 rounded-lg bg-white/5 p-10 md:grid-cols-2 md:gap-8">
+              <div>
+                <Input name="firstName" label="First name" required />
+                <ErrorComponent>
+                  {bookingFetcher.data?.errors?.["firstName"]?.[0]}
+                </ErrorComponent>
+              </div>
+              <div>
+                <Input name="lastName" label="Last name" required />
+                <ErrorComponent>
+                  {bookingFetcher.data?.errors?.["lastName"]?.[0]}
+                </ErrorComponent>
+              </div>
+              <div>
+                <Input name="email" label="Email" type="email" required />
+                <ErrorComponent>
+                  {bookingFetcher.data?.errors?.["email"]?.[0]}
+                </ErrorComponent>
+              </div>
+              <div>
+                <Input name="phone" label="Phone" type="tel" required />
+                <ErrorComponent>
+                  {bookingFetcher.data?.errors?.["phone"]?.[0]}
+                </ErrorComponent>
+              </div>
+            </fieldset>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                name="privacyPolicy"
+                type="checkbox"
+                value="privacyPolicy"
+              />{" "}
+              I accept the{" "}
+              <Link to="/privacy" className="text-blue-600 underline">
+                Privacy Policy
+              </Link>
+            </label>
+            <ErrorComponent>
+              {bookingFetcher.data?.errors?.["privacyPolicy"]?.[0]}
+            </ErrorComponent>
+            <Button
+              className="my-4 px-16"
+              type="submit"
+              disabled={Boolean(bookingFetcher.submission)}
+            >
+              {bookingFetcher.submission ? "Booking..." : "Book"}
+            </Button>
+          </bookingFetcher.Form>
         </motion.div>
 
         <motion.div

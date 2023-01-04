@@ -38,16 +38,16 @@ export async function createBooking({
   day,
   hour,
 }: {
-  firstName?: string;
-  lastName?: string;
-  phone?: string;
-  email?: string;
-  barber?: string;
-  service?: string;
-  year?: string;
-  month?: string;
-  day?: string;
-  hour?: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  barber: string;
+  service: string;
+  year: string;
+  month: string;
+  day: string;
+  hour: string;
 }) {
   if (
     !firstName ||

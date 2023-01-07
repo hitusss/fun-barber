@@ -48,16 +48,6 @@ function drawImageProp({
   offsetX: number;
   offsetY: number;
 }) {
-  if (arguments.length === 2) {
-    x = y = 0;
-    w = ctx.canvas.width;
-    h = ctx.canvas.height;
-  }
-
-  // default offset is center
-  offsetX = typeof offsetX === "number" ? offsetX : 0.5;
-  offsetY = typeof offsetY === "number" ? offsetY : 0.5;
-
   // keep bounds [0.0, 1.0]
   if (offsetX < 0) offsetX = 0;
   if (offsetY < 0) offsetY = 0;

@@ -23,7 +23,9 @@ describe("blog tests", () => {
       "have.length.greaterThan",
       1
     );
-    cy.findByPlaceholderText(/filter/i).type("example blog post 2");
+    cy.findByPlaceholderText(/filter/i).type("example blog post 2", {
+      delay: 0,
+    });
     cy.findAllByRole("link", { name: /example blog post/i }).should(
       "have.length",
       1

@@ -109,7 +109,7 @@ export function Header() {
     minDuration: 300,
   });
   return (
-    <header className="absolute z-40 flex w-full justify-center px-10 py-2">
+    <header className="absolute z-40 flex h-20 w-full items-center justify-center">
       <div className="flex w-full max-w-screen-xl items-center justify-between">
         <div className="flex items-center gap-5">
           <Link to="/" tabIndex={-1} aria-hidden="true">

@@ -1,5 +1,4 @@
 import * as React from "react";
-import type { ShouldReloadFunction } from "@remix-run/react";
 import {
   useLoaderData,
   useFetcher,
@@ -287,4 +286,4 @@ export default function Booking() {
   );
 }
 
-export const unstable_shouldReload: ShouldReloadFunction = () => false;
+export const shouldRevalidate = () => false;

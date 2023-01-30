@@ -67,6 +67,7 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 
 export default function PostPage() {
   const { blogPost } = useLoaderData<LoaderData>();
+  const content = blogPost.content.json as BlogPost["content"]["json"];
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col gap-8 px-4 py-12 lg:px-0">
       <figure>
@@ -121,7 +122,7 @@ export default function PostPage() {
       <div
         className="text-base"
         dangerouslySetInnerHTML={{
-          __html: documentToHtmlString(blogPost.content.json),
+          __html: documentToHtmlString(content),
         }}
       />
     </div>

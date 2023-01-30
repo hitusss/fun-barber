@@ -16,7 +16,7 @@ export function MainWrapper({
         backgroundSize: "cover",
         ...style,
       }}
-      className={clsx("min-h-screen pt-[72px]", className)}
+      className={clsx("min-h-screen pt-20", className)}
       {...props}
     >
       {children}

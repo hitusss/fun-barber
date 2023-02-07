@@ -25,3 +25,11 @@ export function typedBoolean<T>(
 ): value is Exclude<T, "" | 0 | false | null | undefined> {
   return Boolean(value);
 }
+
+export function toBase64(string: string) {
+  if (typeof window === "undefined") {
+    return Buffer.from(string).toString("base64");
+  } else {
+    return window.btoa(string);
+  }
+}

@@ -1,11 +1,11 @@
+import { getGenericSocialImage } from "~/images";
+
 export function getSocialMetas({
   url,
   title = "Fun Barber",
   description = "One of the best barber show nears you.",
   origin,
   image = getGenericSocialImage({
-    origin,
-    url,
     words: description,
     featuredImage: `${origin}/images/featuredImage.png`,
   }),
@@ -35,24 +35,4 @@ export function getSocialMetas({
     "twitter:image": image,
     "twitter:alt": title,
   };
-}
-
-export function getGenericSocialImage({
-  origin,
-  words,
-  featuredImage: img,
-  url,
-}: {
-  origin: string;
-  words: string;
-  featuredImage: string;
-  url: string;
-}) {
-  const params = new URLSearchParams({
-    type: "1",
-    words,
-    img,
-    url,
-  });
-  return `${origin}/social-image?${params.toString()}`;
 }

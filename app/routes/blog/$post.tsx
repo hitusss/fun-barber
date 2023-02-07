@@ -6,7 +6,8 @@ import type { BlogPost } from "~/types";
 import type { LoaderData as RootLoaderData } from "~/root";
 import { TagWrapper, Tag } from "~/components/Tags";
 import { contentful } from "~/services/contentful.server";
-import { getSocialMetas, getUrl, getGenericSocialImage } from "~/utils";
+import { getSocialMetas, getUrl } from "~/utils";
+import { getGenericSocialImage } from "~/images";
 
 type LoaderData = {
   blogPost: BlogPost;
@@ -56,8 +57,6 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
       origin: requestInfo?.origin ?? "",
       url: getUrl(requestInfo),
       image: getGenericSocialImage({
-        origin: requestInfo?.origin ?? "",
-        url: getUrl(requestInfo),
         words: data.blogPost.title,
         featuredImage: data.blogPost.heroImage.url,
       }),

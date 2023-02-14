@@ -8,7 +8,6 @@ export function Heading({
 }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <div
-      tabIndex={0}
       className={clsx(
         "flex items-center gap-3 drop-shadow-lg",
         "before:w-16 before:border-b-4 before:border-brand lg:before:w-24",

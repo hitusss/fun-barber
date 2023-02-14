@@ -152,35 +152,71 @@ export function BookingCalendar({ barber }: { barber: string }) {
         </div>
       )}
 
-      <fieldset disabled={showSpinner}>
-        <table className="w-[336px] overflow-hidden bg-gray-d md:w-[560px]">
-          <thead>
-            <MonthSwitcher date={date} handleMonthChange={handleMonthChange} />
-            <tr className="bg-brand/75">
-              {moment.weekdaysShort().map((day) => (
-                <th key={day} className="h-10 w-12 md:h-16 md:w-20">
-                  {day}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <CalendarBody
-              date={date}
-              handleDaySelect={handleDaySelect}
-              booked={booked}
-            />
-          </tbody>
-        </table>
+      <fieldset
+        disabled={showSpinner}
+        className="grid w-[336px] auto-rows-fr grid-cols-7 overflow-hidden bg-gray-d md:w-[560px]"
+      >
+        <legend className="col-span-7 flex w-full items-center justify-around bg-brand">
+          <button
+            type="button"
+            className="h-10 px-6 text-white/50 hover:text-white md:h-16"
+            onClick={() => handleMonthChange(date.subtract(1, "months"))}
+            disabled={moment().isSame(date, "month")}
+            aria-label="Previous month"
+          >
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <h2 className="md:text-xl">
+            {date.format("MMMM")} {date.format("YYYY")}
+          </h2>
+          <button
+            type="button"
+            className="h-10 px-6 text-white/50 hover:text-white md:h-16"
+            onClick={() => handleMonthChange(date.add(1, "months"))}
+            aria-label="Next month"
+          >
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </legend>
+        <div className="col-span-7 flex items-center justify-around bg-brand">
+          {moment.weekdaysShort().map((day) => (
+            <span key={day}>{day}</span>
+          ))}
+        </div>
+        <CalendarBody
+          date={date}
+          handleDaySelect={handleDaySelect}
+          booked={booked}
+        />
       </fieldset>
 
       <div className="flex w-[336px] flex-col items-center gap-4 bg-gray-d p-6 md:w-[560px]">
-        <h2 tabIndex={0}>Available hours:</h2>
         {day ? (
           <fieldset
             className="grid w-full grid-cols-2 gap-4"
             disabled={showSpinner}
           >
+            <legend className="col-span-2 text-center">Available hours:</legend>
             <HoursGrid
               date={date}
               handleHourSelect={handleHourSelect}
@@ -194,65 +230,6 @@ export function BookingCalendar({ barber }: { barber: string }) {
         )}
       </div>
     </div>
-  );
-}
-
-function MonthSwitcher({
-  date,
-  handleMonthChange,
-}: {
-  date: Moment;
-  handleMonthChange: (newDate: moment.Moment) => void;
-}) {
-  return (
-    <tr className="bg-brand">
-      <th colSpan={2}>
-        <button
-          type="button"
-          className="flex h-10 w-full items-center justify-center text-white/50 hover:text-white md:h-16"
-          onClick={() => handleMonthChange(date.subtract(1, "months"))}
-          disabled={moment().isSame(date, "month")}
-          aria-label="Previous month"
-        >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M15 19l-7-7 7-7"></path>
-          </svg>
-        </button>
-      </th>
-      <th className="text-center" colSpan={3} tabIndex={0}>
-        <h2 className="md:text-xl">
-          {date.format("MMMM")} {date.format("YYYY")}
-        </h2>
-      </th>
-      <th colSpan={2}>
-        <button
-          type="button"
-          className="flex h-10 w-full items-center justify-center text-white/50 hover:text-white md:h-16"
-          onClick={() => handleMonthChange(date.add(1, "months"))}
-          aria-label="Next month"
-        >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M9 5l7 7-7 7"></path>
-          </svg>
-        </button>
-      </th>
-    </tr>
   );
 }
 
@@ -316,22 +293,7 @@ function CalendarBody({
     );
   }
 
-  const calendarBody: React.ReactNode[] = [];
-
-  dayCells.reduce((prev, curr, i) => {
-    if (i === dayCells.length - 1 || (i + 1) % 7 === 0) {
-      calendarBody.push(
-        <tr key={`tr${i}`}>
-          {prev}
-          {curr}
-        </tr>
-      );
-      return [];
-    }
-    return prev instanceof Array ? [...prev, curr] : [prev, curr];
-  }, []);
-
-  return <>{...calendarBody}</>;
+  return <>{...dayCells}</>;
 }
 
 function HoursGrid({

@@ -4,6 +4,7 @@ import {
   useFetcher,
   Link,
   useSearchParams,
+  Form,
 } from "@remix-run/react";
 import type { ActionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -18,7 +19,7 @@ import { Button } from "~/components/Button";
 import { ErrorComponent } from "~/components/ErrorComponent";
 import { contentful } from "~/services/contentful.server";
 import { createBooking } from "~/models/booking.server";
-import { getAllSearchParams, getSocialMetas, getUrl } from "~/utils";
+import { getAllSearchParams, getSocialMetas, getUrl, useForm } from "~/utils";
 
 type LoaderData = {
   barbers: Pick<Barber, "name">[];
@@ -49,24 +50,35 @@ export async function action({ request }: ActionArgs) {
 
   const validData = bookingSchema.safeParse(dataObj);
   if (!validData.success) {
-    const errors: Record<string, string[]> = {};
+    const fieldErrors: Record<string, string[]> = {};
     validData.error.errors.map((e) =>
       e.path.forEach((p) => {
-        if (errors[p]) {
-          errors[p].push(e.message);
+        if (fieldErrors[p]) {
+          fieldErrors[p].push(e.message);
         } else {
-          errors[p] = [e.message];
+          fieldErrors[p] = [e.message];
         }
       })
     );
-    return json({ ok: false, errors });
+    return json(
+      { ok: false, errors: { fieldErrors, formErrors: null } },
+      { status: 400 }
+    );
   }
 
   try {
     const result = await createBooking(validData.data);
     return json({ ...result, ok: true });
   } catch (error) {
-    return json(error, 400);
+    const errorMsg =
+      error instanceof Error ? error.message : JSON.stringify(error);
+    return json(
+      {
+        ok: false,
+        errors: { fieldErrors: null, formErrors: [errorMsg] },
+      },
+      { status: 400 }
+    );
   }
 }
 
@@ -112,7 +124,14 @@ export default function Booking() {
   const { barbers, services } = useLoaderData<LoaderData>();
   const [searchParams, setSearchParams] = useSearchParams();
   const reducedMotion = useReducedMotion();
+  const formRef = React.useRef<HTMLFormElement>(null);
   const successRef = React.useRef<HTMLHeadingElement>(null);
+  const { form, fields } = useForm({
+    name: "booking",
+    formRef,
+    schema: bookingSchema,
+    errors: bookingFetcher.data?.errors,
+  });
 
   const barber = searchParams.get("barber") || barbers[0].name;
   const service =
@@ -143,15 +162,6 @@ export default function Booking() {
     }
   }, [duration, isSuccess]);
 
-  React.useEffect(() => {
-    const keys = Object.keys(bookingFetcher.data?.errors || {});
-    if (keys.length > 0) {
-      (
-        document.querySelector(`input[name=${keys[0]}]`) as HTMLInputElement
-      )?.focus();
-    }
-  }, [bookingFetcher.data?.errors]);
-
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center justify-center">
       <AnimatePresence>
@@ -167,11 +177,11 @@ export default function Booking() {
           <bookingFetcher.Form
             method="post"
             className="flex flex-col items-center gap-4"
+            {...form.props}
           >
             <fieldset className="grid w-3/4 grid-cols-1 md:grid-cols-2 md:gap-8">
               <div>
                 <Select
-                  name="barber"
                   options={barbers.map(({ name }) => name)}
                   defaultValue={barber}
                   onChange={(e) =>
@@ -182,14 +192,12 @@ export default function Booking() {
                   }
                   label="Barber"
                   required
+                  {...fields.barber.props}
                 />
-                <ErrorComponent>
-                  {bookingFetcher.data?.errors?.["barber"]?.[0]}
-                </ErrorComponent>
+                {fields.barber.errors}
               </div>
               <div>
                 <Select
-                  name="service"
                   options={services.map(
                     ({ name, price }) => `${name} (${price}$)`
                   )}
@@ -202,53 +210,56 @@ export default function Booking() {
                   }
                   label="Service"
                   required
+                  {...fields.service.props}
                 />
-                <ErrorComponent>
-                  {bookingFetcher.data?.errors?.["service"]?.[0]}
-                </ErrorComponent>
+                {fields.service.errors}
               </div>
             </fieldset>
             <BookingCalendar barber={barber} />
             <fieldset className="grid w-4/5 grid-cols-1 rounded-lg bg-white/5 p-10 md:grid-cols-2 md:gap-8">
               <div>
-                <Input name="firstName" label="First name" required />
-                <ErrorComponent>
-                  {bookingFetcher.data?.errors?.["firstName"]?.[0]}
-                </ErrorComponent>
+                <Input
+                  label="First name"
+                  required
+                  {...fields.firstName.props}
+                />
+                {fields.firstName.errors}
               </div>
               <div>
-                <Input name="lastName" label="Last name" required />
-                <ErrorComponent>
-                  {bookingFetcher.data?.errors?.["lastName"]?.[0]}
-                </ErrorComponent>
+                <Input label="Last name" required {...fields.lastName.props} />
+                {fields.lastName.errors}
               </div>
               <div>
-                <Input name="email" label="Email" type="email" required />
-                <ErrorComponent>
-                  {bookingFetcher.data?.errors?.["email"]?.[0]}
-                </ErrorComponent>
+                <Input
+                  label="Email"
+                  type="email"
+                  required
+                  {...fields.email.props}
+                />
+                {fields.email.errors}
               </div>
               <div>
-                <Input name="phone" label="Phone" type="tel" required />
-                <ErrorComponent>
-                  {bookingFetcher.data?.errors?.["phone"]?.[0]}
-                </ErrorComponent>
+                <Input
+                  label="Phone"
+                  type="tel"
+                  required
+                  {...fields.phone.props}
+                />
+                {fields.phone.errors}
               </div>
             </fieldset>
             <label className="flex items-center gap-2 text-sm">
               <input
-                name="privacyPolicy"
                 type="checkbox"
                 value="privacyPolicy"
+                {...fields.privacyPolicy.props}
               />{" "}
               I accept the{" "}
               <Link to="/privacy" className="text-blue-600 underline">
                 Privacy Policy
               </Link>
             </label>
-            <ErrorComponent>
-              {bookingFetcher.data?.errors?.["privacyPolicy"]?.[0]}
-            </ErrorComponent>
+            {fields.privacyPolicy.errors}
             <Button
               className="my-4 px-16"
               type="submit"
@@ -256,6 +267,7 @@ export default function Booking() {
             >
               {bookingFetcher.submission ? "Booking..." : "Book"}
             </Button>
+            {form.errors}
           </bookingFetcher.Form>
         </motion.div>
 

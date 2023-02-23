@@ -253,7 +253,7 @@ function CalendarBody({
 
   const firstDay = +moment(date).startOf("month").format("d");
   for (let i = 0; i < firstDay; i++) {
-    dayCells.push(<td key={`empty${i}`} />);
+    dayCells.push(<div key={`empty${i}`} />);
   }
 
   for (let d = 1; d <= date.daysInMonth(); d++) {
@@ -270,7 +270,7 @@ function CalendarBody({
       dDate.format("ddd") === "Sun";
 
     dayCells.push(
-      <td key={d} className="h-12 w-12 md:h-20 md:w-20">
+      <div key={d} className="h-12 w-12 md:h-20 md:w-20">
         <RadioButton
           name="day"
           value={d}
@@ -289,7 +289,7 @@ function CalendarBody({
           className="flex aspect-square h-3/4 flex-col items-center justify-center rounded-full p-0 text-center hover:bg-brand/75 peer-checked:bg-brand peer-focus:bg-brand/75"
           onChange={handleSelectDay}
         />
-      </td>
+      </div>
     );
   }
 

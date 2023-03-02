@@ -25,7 +25,6 @@ export function ServiceCard({
         duration: reducedMotion ? 0 : 0.5,
       }}
       viewport={{ once: true }}
-      tabIndex={0}
       className="flex h-80 w-72 flex-col items-center gap-4 rounded-lg bg-gray-d py-6 shadow-md"
     >
       <Icon className="fill-brand stroke-brand" />

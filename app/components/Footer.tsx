@@ -42,7 +42,7 @@ export function Footer() {
           </a>
         </div>
       </div>
-      <div tabIndex={0} className="text-center text-sm lg:text-left">
+      <div className="text-center text-sm lg:text-left">
         <h2 className="mb-2 text-2xl">Contact</h2>
         <p>
           <strong>Adress:</strong> 2087 Despard Street, Atlanta, GA
@@ -54,7 +54,7 @@ export function Footer() {
           <strong>Email:</strong> contact@funbarb.com
         </p>
       </div>
-      <div tabIndex={0} className="text-center text-sm lg:text-left">
+      <div className="text-center text-sm lg:text-left">
         <h2 className="mb-2 text-2xl">Opening Hours</h2>
         <p>Monday - Friday 9am - 5pm</p>
         <p>Saturday 9am - 3pm</p>

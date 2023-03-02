@@ -25,7 +25,6 @@ export function BarberCard({
         duration: reducedMotion ? 0 : 0.5,
       }}
       viewport={{ once: true }}
-      tabIndex={0}
       style={{
         backgroundImage: `url(${image}?w=400&h=400)`,
       }}

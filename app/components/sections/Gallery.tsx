@@ -9,11 +9,7 @@ export function Gallery({ gallery }: { gallery: GalleryImage[] }) {
       </div>
       <ul className="mx-8 flex snap-x gap-4 overflow-x-auto overscroll-contain scroll-smooth py-2">
         {gallery.map((item) => (
-          <li
-            key={item.name}
-            tabIndex={0}
-            className="shrink-0 grow-0 snap-center"
-          >
+          <li key={item.name} className="shrink-0 grow-0 snap-center">
             <figure>
               <picture>
                 <source

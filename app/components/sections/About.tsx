@@ -35,7 +35,7 @@ export function About() {
         className="flex h-5/6 flex-col justify-center gap-9 p-4"
       >
         <Heading>About Us</Heading>
-        <p tabIndex={0} className="max-w-prose px-12 drop-shadow-lg">
+        <p className="max-w-prose px-12 drop-shadow-lg">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. A dignissim
           tellus at ac tellus cursus. Magna gravida mi consequat quam turpis
           donec nam. Vivamus vulputate egestas cursus purus elementum auctor

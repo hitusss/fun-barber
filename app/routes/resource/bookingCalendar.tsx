@@ -2,7 +2,6 @@ import * as React from "react";
 import type { LoaderArgs, SerializeFrom } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher, useSearchParams } from "@remix-run/react";
-import type { Moment } from "moment";
 import moment from "moment";
 import { useSpinDelay } from "spin-delay";
 import type { Booking } from "~/models/booking.server";

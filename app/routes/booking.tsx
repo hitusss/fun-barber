@@ -4,7 +4,6 @@ import {
   useFetcher,
   Link,
   useSearchParams,
-  Form,
 } from "@remix-run/react";
 import type { ActionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -16,7 +15,6 @@ import { BookingCalendar } from "~/routes/resource/bookingCalendar";
 import { Select } from "~/components/Select";
 import { Input } from "~/components/Input";
 import { Button } from "~/components/Button";
-import { ErrorComponent } from "~/components/ErrorComponent";
 import { contentful } from "~/services/contentful.server";
 import { createBooking } from "~/models/booking.server";
 import { getAllSearchParams, getSocialMetas, getUrl, useForm } from "~/utils";

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useLoaderData } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import type { BlogPost, PageHandle } from "~/types";
 import type { LoaderData as RootLoaderData } from "~/root";
 import { Heading } from "~/components/Heading";
@@ -64,7 +64,6 @@ export const meta: MetaFunction = ({ parentsData }) => {
 
 export default function BlogPage() {
   const [filter, setFilter] = React.useState("");
-  const reducedMotion = useReducedMotion();
   const { blogPosts } = useLoaderData<LoaderData>();
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-10 py-12">
@@ -73,13 +72,7 @@ export default function BlogPage() {
           <picture>
             <source srcSet="images/blog.webp" type="image/webp" />
             <source srcSet="images/blog.jpg" type="image/jpeg" />
-            <motion.img
-              initial={{ opacity: 0.5, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: reducedMotion ? 0 : 0.5,
-              }}
-              viewport={{ once: true, margin: "-15%" }}
+            <img
               src="images/blog.jpg"
               alt=""
               className="hidden h-full w-full border-4 border-brand object-cover drop-shadow-lg lg:block"
@@ -113,8 +106,8 @@ export default function BlogPage() {
                   .split(" ")
                   .reduce((acc, cur) => acc || post.tags.includes(cur), false)
             )
-            .map((blogPost) => (
-              <BlogCard key={blogPost.title} {...blogPost} />
+            .map((blogPost, i) => (
+              <BlogCard key={blogPost.title} {...blogPost} delay={0.05 * i} />
             ))}
         </AnimatePresence>
       </div>

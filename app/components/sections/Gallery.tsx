@@ -23,7 +23,7 @@ export function Gallery({ gallery }: { gallery: GalleryImage[] }) {
                 <img
                   src={`${item.image.url}?w=300&h=300&fm=jpg`}
                   alt=""
-                  className="h-60 w-48 object-cover"
+                  className="h-72 w-56 object-cover"
                 />
               </picture>
             </figure>

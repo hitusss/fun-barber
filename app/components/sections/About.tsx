@@ -1,24 +1,25 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Heading } from "~/components/Heading";
+import { useReducedMotion } from "~/utils";
 
 export function About() {
-  const reducedMotion = useReducedMotion();
+  const { duration } = useReducedMotion();
   return (
     <section
       id="about"
-      className="relative -mt-[100vh] flex h-screen items-center gap-12 overflow-hidden bg-white py-8 text-black"
+      className="isolate flex items-center gap-12 overflow-hidden bg-black/10 py-8 shadow-xl backdrop-blur-xl lg:h-screen"
     >
-      <figure className="h-5/6">
+      <figure className="z-10 hidden h-5/6 lg:block">
         <picture>
           <source srcSet="images/about.webp" type="image/webp" />
           <source srcSet="images/about.jpg" type="image/jpeg" />
           <motion.img
-            initial={{ opacity: 0.5, x: -200 }}
-            whileInView={{ opacity: 1, x: -32 }}
+            initial={{ x: -200 }}
+            whileInView={{ x: -32 }}
             transition={{
-              duration: reducedMotion ? 0 : 0.5,
+              duration,
             }}
-            viewport={{ once: true, margin: "-15%" }}
+            viewport={{ once: true, margin: "-10%" }}
             src="images/about.jpg"
             alt=""
             className="hidden h-full border-4 border-brand object-cover drop-shadow-lg lg:block"
@@ -26,16 +27,16 @@ export function About() {
         </picture>
       </figure>
       <motion.div
-        initial={{ opacity: 0.5, x: 200 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0.5, translateX: "-50vw" }}
+        whileInView={{ opacity: 1, translateX: 0 }}
         transition={{
-          duration: reducedMotion ? 0 : 0.5,
+          duration,
         }}
-        viewport={{ once: true, margin: "-30%" }}
+        viewport={{ once: true, margin: "-10%" }}
         className="flex h-5/6 flex-col justify-center gap-9 p-4"
       >
         <Heading>About Us</Heading>
-        <p className="max-w-prose px-12 drop-shadow-lg">
+        <p className="max-w-prose px-8 drop-shadow">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. A dignissim
           tellus at ac tellus cursus. Magna gravida mi consequat quam turpis
           donec nam. Vivamus vulputate egestas cursus purus elementum auctor

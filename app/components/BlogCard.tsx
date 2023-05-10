@@ -1,9 +1,12 @@
 import { Link } from "@remix-run/react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { BlogPost } from "~/types";
 import { TagWrapper, Tag } from "~/components/Tags";
+import { useReducedMotion } from "~/utils";
 
-type BlogCardProps = Omit<BlogPost, "content">;
+type BlogCardProps = Omit<BlogPost, "content"> & {
+  delay: number;
+};
 
 export function BlogCard({
   title,
@@ -12,8 +15,9 @@ export function BlogCard({
   heroImage,
   date,
   author,
+  delay,
 }: BlogCardProps) {
-  const reducedMotion = useReducedMotion();
+  const { duration } = useReducedMotion();
   return (
     <Link key={title} to={`/blog/${slug}`} aria-label={`blog post: ${title}`}>
       <motion.article
@@ -21,7 +25,8 @@ export function BlogCard({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.7 }}
         transition={{
-          duration: reducedMotion ? 0 : 0.5,
+          duration,
+          delay,
         }}
         whileHover={{ scale: 1.05 }}
         className="flex h-auto w-72 flex-col gap-4 overflow-hidden rounded-lg"

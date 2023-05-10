@@ -1,5 +1,6 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { InstagramIcon } from "~/components/Icons";
+import { useReducedMotion } from "~/utils";
 
 type BarberCardProp = {
   image: string;
@@ -7,6 +8,7 @@ type BarberCardProp = {
   instagram: string;
   instagramLink: string;
   bio: string;
+  delay: number | undefined;
 };
 
 export function BarberCard({
@@ -15,14 +17,16 @@ export function BarberCard({
   instagram,
   instagramLink,
   bio,
+  delay,
 }: BarberCardProp) {
-  const reducedMotion = useReducedMotion();
+  const { duration } = useReducedMotion();
   return (
     <motion.li
       initial={{ opacity: 0.5, y: 100 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{
-        duration: reducedMotion ? 0 : 0.5,
+        duration,
+        delay,
       }}
       viewport={{ once: true }}
       style={{

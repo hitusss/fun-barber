@@ -1,11 +1,13 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import * as Icons from "~/components/Icons";
+import { useReducedMotion } from "~/utils";
 
 type ServiceCardProps = {
   title: string;
   price: number;
   description: string;
   icon: string;
+  delay: number | undefined;
 };
 
 export function ServiceCard({
@@ -13,19 +15,21 @@ export function ServiceCard({
   price,
   description,
   icon,
+  delay,
 }: ServiceCardProps) {
-  const reducedMotion = useReducedMotion();
+  const { duration } = useReducedMotion();
   // @ts-ignore
   const Icon = Icons[icon] ?? Icons.ScissorsIcon;
   return (
     <motion.div
-      initial={{ opacity: 0.5, y: 100 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, scale: 0.75, y: 150 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
       transition={{
-        duration: reducedMotion ? 0 : 0.5,
+        duration,
+        delay,
       }}
-      viewport={{ once: true }}
-      className="flex h-80 w-72 flex-col items-center gap-4 rounded-lg bg-gray-d py-6 shadow-md"
+      viewport={{ once: true, margin: "10%" }}
+      className="flex h-80 w-72 flex-col items-center gap-4 rounded-lg bg-white/20 py-6 shadow-xl"
     >
       <Icon className="fill-brand stroke-brand" />
       <div className="flex flex-col items-center font-bold text-brand">

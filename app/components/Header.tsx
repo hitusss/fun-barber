@@ -9,10 +9,11 @@ import {
   MenuPopover,
   useMenuButtonContext,
 } from "@reach/menu-button";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSpinDelay } from "spin-delay";
 import { Logo } from "~/components/Logo";
 import { Spinner } from "~/components/Spinner";
+import { useReducedMotion } from "~/utils";
 
 const links = [
   { name: "Home", to: "/" },
@@ -51,7 +52,7 @@ function NavLink({ to, children, ...rest }: Parameters<typeof Link>["0"]) {
 
 function MobileMenu() {
   const { isExpanded } = useMenuButtonContext();
-  const reducedMotion = useReducedMotion();
+  const { reducedMotion } = useReducedMotion();
 
   React.useEffect(() => {
     if (isExpanded) {

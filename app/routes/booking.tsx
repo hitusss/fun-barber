@@ -7,7 +7,7 @@ import {
 } from "@remix-run/react";
 import type { ActionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
 import type { Service, Barber } from "~/types";
 import type { LoaderData as RootLoaderData } from "~/root";
@@ -17,7 +17,13 @@ import { Input } from "~/components/Input";
 import { Button } from "~/components/Button";
 import { contentful } from "~/services/contentful.server";
 import { createBooking } from "~/models/booking.server";
-import { getAllSearchParams, getSocialMetas, getUrl, useForm } from "~/utils";
+import {
+  getAllSearchParams,
+  getSocialMetas,
+  getUrl,
+  useForm,
+  useReducedMotion,
+} from "~/utils";
 
 type LoaderData = {
   barbers: Pick<Barber, "name">[];
@@ -121,7 +127,7 @@ export default function Booking() {
   const bookingFetcher = useFetcher();
   const { barbers, services } = useLoaderData<LoaderData>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const reducedMotion = useReducedMotion();
+  const { duration } = useReducedMotion();
   const formRef = React.useRef<HTMLFormElement>(null);
   const successRef = React.useRef<HTMLHeadingElement>(null);
   const { form, fields } = useForm({
@@ -138,7 +144,6 @@ export default function Booking() {
 
   const isSuccess = bookingFetcher?.data?.ok;
 
-  const duration = reducedMotion ? 0 : 0.5;
   const variants = {
     visible: {
       opacity: 1,

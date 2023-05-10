@@ -27,7 +27,7 @@ export function Services({ services }: { services: Service[] }) {
             />
           ))}
         </div>
-        <Button size="large" color="dark">
+        <Button size="large" color="light">
           <Link to="booking">Book Now</Link>
         </Button>
       </div>

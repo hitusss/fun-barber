@@ -7,7 +7,7 @@ export function About() {
   return (
     <section
       id="about"
-      className="isolate flex items-center gap-12 overflow-hidden bg-black/10 py-8 shadow-xl backdrop-blur-xl lg:h-screen"
+      className="isolate flex items-center gap-12 overflow-hidden py-8 lg:h-screen"
     >
       <figure className="z-10 hidden h-5/6 lg:block">
         <picture>

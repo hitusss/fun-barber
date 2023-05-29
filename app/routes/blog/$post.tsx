@@ -68,58 +68,65 @@ export default function PostPage() {
   const { blogPost } = useLoaderData<LoaderData>();
   const content = blogPost.content.json as BlogPost["content"]["json"];
   return (
-    <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col gap-8 px-4 py-12 lg:px-0">
-      <figure>
-        <picture>
-          <source
-            srcSet={`${blogPost.heroImage.url}?w=1280&h=1280&fm=webp`}
-            type="image/webp"
-          />
-          <source
-            srcSet={`${blogPost.heroImage.url}?w=1280&h=1280&fm=jpg`}
-            type="image/jpeg"
-          />
-          <img
-            src={`${blogPost.heroImage.url}?w=1280&h=1280&fm=jpg`}
-            alt=""
-            className="h-96 w-full rounded-lg object-cover"
-          />
-        </picture>
-      </figure>
-      <div className="flex flex-col gap-2">
-        <p className="text-sm text-gray-l">
-          {new Date(blogPost.date).toLocaleDateString()}
-        </p>
+    <div className="mx-auto flex min-h-screen flex-col gap-28 py-12">
+      <div className="relative">
+        <figure>
+          <picture>
+            <source
+              srcSet={`${blogPost.heroImage.url}?w=1280&h=1280&fm=webp`}
+              type="image/webp"
+            />
+            <source
+              srcSet={`${blogPost.heroImage.url}?w=1280&h=1280&fm=jpg`}
+              type="image/jpeg"
+            />
+            <img
+              src={`${blogPost.heroImage.url}?w=1280&h=1280&fm=jpg`}
+              alt=""
+              className="h-[60vh] w-full object-cover "
+            />
+          </picture>
+        </figure>
+        <span className="absolute inset-0 h-full w-full bg-gradient-to-t from-black to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 mx-auto flex w-full max-w-screen-xl translate-y-20 flex-col gap-2 px-4 lg:px-0">
+          <h1 className="text-heading2 font-bold text-brand shadow-lg">
+            {blogPost.title}
+          </h1>
+          <div className="flex items-center gap-2 text-base">
+            <figure>
+              <picture>
+                <source
+                  srcSet={`${blogPost.author.avatar.url}?w=100&h=100&fm=webp`}
+                  type="image/webp"
+                />
+                <source
+                  srcSet={`${blogPost.author.avatar.url}?w=100&h=100&fm=jpg`}
+                  type="image/jpeg"
+                />
+                <img
+                  src={`${blogPost.author.avatar.url}?w=100&h=100&fm=jpg`}
+                  alt=""
+                  className="h-8 w-8 rounded-full object-cover"
+                />
+              </picture>
+            </figure>
+            <div>
+              <p>{blogPost.author.name}</p>
+              <p className="text-sm">
+                {new Date(blogPost.date).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
 
-        <h1 className="text-heading2 font-bold text-brand">{blogPost.title}</h1>
-        <div className="flex items-center gap-2 text-base">
-          <figure>
-            <picture>
-              <source
-                srcSet={`${blogPost.author.avatar.url}?w=100&h=100&fm=webp`}
-                type="image/webp"
-              />
-              <source
-                srcSet={`${blogPost.author.avatar.url}?w=100&h=100&fm=jpg`}
-                type="image/jpeg"
-              />
-              <img
-                src={`${blogPost.author.avatar.url}?w=100&h=100&fm=jpg`}
-                alt=""
-                className="h-8 w-8 rounded-full object-cover"
-              />
-            </picture>
-          </figure>
-          <p>{blogPost.author.name}</p>
+          <TagWrapper>
+            {blogPost.tags.map((tag) => (
+              <Tag key={tag}>{tag}</Tag>
+            ))}
+          </TagWrapper>
         </div>
-        <TagWrapper>
-          {blogPost.tags.map((tag) => (
-            <Tag key={tag}>{tag}</Tag>
-          ))}
-        </TagWrapper>
       </div>
       <div
-        className="text-base"
+        className="mx-auto max-w-screen-xl px-4 text-base lg:px-0"
         dangerouslySetInnerHTML={{
           __html: documentToHtmlString(content),
         }}

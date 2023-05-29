@@ -61,10 +61,12 @@ export default function Index() {
   return (
     <>
       <Hero />
-      <About />
-      <Barbers barbers={barbers} />
-      <Services services={services} />
-      <Gallery gallery={gallery} />
+      <div className="bg-black/10 backdrop-blur-xl">
+        <About />
+        <Barbers barbers={barbers} />
+        <Services services={services} />
+        <Gallery gallery={gallery} />
+      </div>
     </>
   );
 }

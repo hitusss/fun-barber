@@ -11,7 +11,7 @@ export function Services({ services }: { services: Service[] }) {
   return (
     <section
       id="services"
-      className="flex items-center justify-center gap-12 overflow-hidden bg-black/10 py-12 shadow-xl backdrop-blur-xl lg:justify-end"
+      className="flex items-center justify-center gap-12 overflow-hidden py-12 lg:justify-end"
     >
       <div className="flex h-5/6 max-w-6xl flex-col items-center justify-start gap-9 p-6">
         <Heading>Services</Heading>

@@ -1,5 +1,4 @@
-import * as React from "react";
-
+export {};
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -39,7 +38,7 @@ declare global {
 // Also added custom types to avoid getting detached
 // https://github.com/cypress-io/cypress/issues/7306#issuecomment-1152752612
 // ===========================================================
-function visitAndCheck(url: string, waitTime: number = 1000) {
+function visitAndCheck(url: string, waitTime = 1000) {
   cy.visit(url);
   cy.location("pathname").should("contain", url).wait(waitTime);
 }
@@ -50,7 +49,7 @@ function validateInputErrorByLabel(
   label: RegExp,
   value: string,
   error: RegExp,
-  errorExist: boolean = true
+  errorExist = true,
 ) {
   cy.findByLabelText(label).type(value);
   cy.findByRole("button", { name: /book/i }).click();

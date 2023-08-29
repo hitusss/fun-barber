@@ -1,23 +1,24 @@
-import { useLoaderData } from "@remix-run/react";
-import { json } from "@remix-run/node";
-import type { Barber, Service, GalleryImage } from "~/types.ts";
-import { Hero } from "~/components/sections/Hero.tsx";
-import { About } from "~/components/sections/About.tsx";
-import { Barbers } from "~/components/sections/Barbers.tsx";
-import { Services } from "~/components/sections/Services.tsx";
-import { Gallery } from "~/components/sections/Gallery.tsx";
-import { contentful } from "~/services/contentful.server.ts";
+import { json } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
+import type { Barber, GalleryImage, Service } from '~/types.ts'
+
+import { contentful } from '~/services/contentful.server.ts'
+import { About } from '~/components/sections/About.tsx'
+import { Barbers } from '~/components/sections/Barbers.tsx'
+import { Gallery } from '~/components/sections/Gallery.tsx'
+import { Hero } from '~/components/sections/Hero.tsx'
+import { Services } from '~/components/sections/Services.tsx'
 
 export async function loader() {
-  const {
-    barbersCollection: { items: barbers },
-    servicesCollection: { items: services },
-    galleryCollection: { items: gallery },
-  } = await contentful<{
-    barbersCollection: { items: Barber[] };
-    servicesCollection: { items: Service[] };
-    galleryCollection: { items: GalleryImage[] };
-  }>(`{
+	const {
+		barbersCollection: { items: barbers },
+		servicesCollection: { items: services },
+		galleryCollection: { items: gallery },
+	} = await contentful<{
+		barbersCollection: { items: Barber[] }
+		servicesCollection: { items: Service[] }
+		galleryCollection: { items: GalleryImage[] }
+	}>(`{
     barbersCollection {
       items {
         name
@@ -45,26 +46,26 @@ export async function loader() {
         name
       }
     }
-  }`);
+  }`)
 
-  return json({
-    barbers,
-    services,
-    gallery,
-  });
+	return json({
+		barbers,
+		services,
+		gallery,
+	})
 }
 
 export default function Index() {
-  const { barbers, services, gallery } = useLoaderData<typeof loader>();
-  return (
-    <>
-      <Hero />
-      <div className="bg-black/10 backdrop-blur-xl">
-        <About />
-        <Barbers barbers={barbers} />
-        <Services services={services} />
-        <Gallery gallery={gallery} />
-      </div>
-    </>
-  );
+	const { barbers, services, gallery } = useLoaderData<typeof loader>()
+	return (
+		<>
+			<Hero />
+			<div className="bg-black/10 backdrop-blur-xl">
+				<About />
+				<Barbers barbers={barbers} />
+				<Services services={services} />
+				<Gallery gallery={gallery} />
+			</div>
+		</>
+	)
 }

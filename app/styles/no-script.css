@@ -1,4 +1,4 @@
-[style*="opacity:0"] {
-  opacity: unset !important;
-  transform: unset !important;
+[style*='opacity:0'] {
+	opacity: unset !important;
+	transform: unset !important;
 }

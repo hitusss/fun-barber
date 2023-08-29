@@ -1,10 +1,11 @@
-import { setupServer } from "msw/node";
-import { contentfulHandlers } from "./handlers/contentful.ts";
+import { setupServer } from 'msw/node'
 
-const server = setupServer(...contentfulHandlers);
+import { contentfulHandlers } from './handlers/contentful.ts'
 
-server.listen({ onUnhandledRequest: "warn" });
-console.info("🔶 Mock server running");
+const server = setupServer(...contentfulHandlers)
 
-process.once("SIGINT", () => server.close());
-process.once("SIGTERM", () => server.close());
+server.listen({ onUnhandledRequest: 'warn' })
+console.info('🔶 Mock server running')
+
+process.once('SIGINT', () => server.close())
+process.once('SIGTERM', () => server.close())

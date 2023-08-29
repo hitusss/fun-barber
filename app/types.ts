@@ -1,1 +1,1 @@
-export type * from "../types/index.d.ts";
+export type * from '../types/index.d.ts'

@@ -1,25 +1,25 @@
 {
-  "short_name": "FBarber",
-  "name": "Fun Barber",
-  "description": "One of the best barber show nears you.",
-  "start_url": "/",
-  "lang": "en",
-  "categories": ["barbershop", "booking"],
-  "theme_color": "#97744e",
-  "background_color": "#fffefe",
-  "display": "standalone",
-  "icons": [
-    {
-      "src": "/images/android-chrome-192.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/images/android-chrome-512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
-    }
-  ]
+	"short_name": "FBarber",
+	"name": "Fun Barber",
+	"description": "One of the best barber show nears you.",
+	"start_url": "/",
+	"lang": "en",
+	"categories": ["barbershop", "booking"],
+	"theme_color": "#97744e",
+	"background_color": "#fffefe",
+	"display": "standalone",
+	"icons": [
+		{
+			"src": "/images/android-chrome-192.png",
+			"type": "image/png",
+			"sizes": "192x192",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/images/android-chrome-512.png",
+			"type": "image/png",
+			"sizes": "512x512",
+			"purpose": "maskable"
+		}
+	]
 }

@@ -1,4 +1,5 @@
-import { installGlobals } from "@remix-run/node";
-import "@testing-library/jest-dom/vitest";
+import { installGlobals } from '@remix-run/node'
 
-installGlobals();
+import '@testing-library/jest-dom/vitest'
+
+installGlobals()

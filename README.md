@@ -14,7 +14,8 @@
 
 ## Development
 
-- Initial setup: _If you just generated this project, this step has been done for you._
+- Initial setup: _If you just generated this project, this step has been done
+  for you._
 
   ```sh
   npm run setup
@@ -41,7 +42,10 @@ Prior to your first deployment, you'll need to do a few things:
   fly auth signup
   ```
 
-  > **Note:** If you have more than one Fly account, ensure that you are signed into the same account in the Fly CLI as you are in the browser. In your terminal, run `fly auth whoami` and ensure the email matches the Fly account signed into the browser.
+  > **Note:** If you have more than one Fly account, ensure that you are signed
+  > into the same account in the Fly CLI as you are in the browser. In your
+  > terminal, run `fly auth whoami` and ensure the email matches the Fly account
+  > signed into the browser.
 
 - Create two apps on Fly, one for staging and one for production:
 
@@ -50,11 +54,13 @@ Prior to your first deployment, you'll need to do a few things:
   fly apps create fun-barber-5bdf-staging
   ```
 
-  > **Note:** Make sure this name matches the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy.
+  > **Note:** Make sure this name matches the `app` set in your `fly.toml` file.
+  > Otherwise, you will not be able to deploy.
 
-- Add a `FLY_API_TOKEN` to your GitHub repo. To do this, go to your user settings
-  on Fly and create a new [token](https://web.fly.io/user/personal_access_tokens/new),
-  then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
+- Add a `FLY_API_TOKEN` to your GitHub repo. To do this, go to your user
+  settings on Fly and create a new
+  [token](https://web.fly.io/user/personal_access_tokens/new), then add it to
+  [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
   with the name `FLY_API_TOKEN`.
 
 - Create a persistent volume for the sqlite database for both your staging and

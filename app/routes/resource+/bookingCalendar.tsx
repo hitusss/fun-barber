@@ -4,11 +4,11 @@ import { json } from "@remix-run/node";
 import { useFetcher, useSearchParams } from "@remix-run/react";
 import moment from "moment";
 import { useSpinDelay } from "spin-delay";
-import type { Booking } from "~/models/booking.server";
-import { getBookings } from "~/models/booking.server";
-import { getAllSearchParams } from "~/utils";
-import { RadioButton } from "~/components/RadioButton";
-import { Spinner } from "~/components/Spinner";
+import type { Booking } from "~/models/booking.server.ts";
+import { getBookings } from "~/models/booking.server.ts";
+import { getAllSearchParams } from "~/utils/index.ts";
+import { RadioButton } from "~/components/RadioButton.tsx";
+import { Spinner } from "~/components/Spinner.tsx";
 
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
@@ -22,7 +22,7 @@ export async function loader({ request }: LoaderArgs) {
   return json(bookings);
 }
 
-export function BookingCalendar({ barber }: { barber: string }) {
+export function BookingCalendar({ barber }: { barber?: string }) {
   const bookingCalendarFetcher = useFetcher<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const showSpinner = useSpinDelay(bookingCalendarFetcher.state !== "idle", {
@@ -80,7 +80,7 @@ export function BookingCalendar({ barber }: { barber: string }) {
     if (!month || !year || !barber) return;
     bookingCalendarFetcher.submit(
       { barber, month, year },
-      { method: "get", action: "/resource/bookingCalendar" }
+      { method: "get", action: "/resource/bookingCalendar" },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [month, year, barber]);
@@ -89,12 +89,12 @@ export function BookingCalendar({ barber }: { barber: string }) {
     if (!date.isValid() || !booked) return;
 
     const allDays = document.querySelectorAll(
-      `input[name=day]:not([disabled])`
+      `input[name=day]:not([disabled])`,
     ) as NodeListOf<HTMLInputElement>;
 
     if (day) {
       const selectedDay = Array.from(allDays).find(
-        (dayInput) => dayInput.value === day
+        (dayInput) => dayInput.value === day,
       );
       if (selectedDay) {
         selectedDay.click();
@@ -115,12 +115,12 @@ export function BookingCalendar({ barber }: { barber: string }) {
   React.useEffect(() => {
     if (!date.isValid() || !booked) return;
     const allHours = document.querySelectorAll(
-      `input[name=hour]:not([disabled])`
+      `input[name=hour]:not([disabled])`,
     ) as NodeListOf<HTMLInputElement>;
 
     if (hour) {
       const selectedHour = Array.from(allHours).find(
-        (hourInput) => hourInput.value === hour
+        (hourInput) => hourInput.value === hour,
       );
       if (selectedHour) {
         selectedHour.click();
@@ -220,7 +220,7 @@ export function BookingCalendar({ barber }: { barber: string }) {
               date={date}
               handleHourSelect={handleHourSelect}
               booked={booked?.filter(
-                ({ date }) => new Date(date).getDate() === Number(day)
+                ({ date }) => new Date(date).getDate() === Number(day),
               )}
             />
           </fieldset>
@@ -288,7 +288,7 @@ function CalendarBody({
           className="flex aspect-square h-3/4 flex-col items-center justify-center rounded-full p-0 text-center hover:bg-brand/75 peer-checked:bg-brand peer-focus:bg-brand/75"
           onChange={handleSelectDay}
         />
-      </div>
+      </div>,
     );
   }
 
@@ -324,7 +324,7 @@ function HoursGrid({
         disabled={booked?.some(({ hour }) => hour === formateHour)}
         className="flex h-14 w-full items-center justify-center rounded-full bg-brand shadow-md hover:bg-brand/75 peer-checked:bg-brand/50 peer-focus:bg-brand/75 peer-disabled:bg-brand/25"
         onChange={handleSelectHour}
-      />
+      />,
     );
     date.add(1, "hours");
   }

@@ -1,14 +1,14 @@
 import * as React from "react";
 import { useLoaderData } from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/node";
+import type { V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { AnimatePresence } from "framer-motion";
-import type { BlogPost, PageHandle } from "~/types";
-import type { LoaderData as RootLoaderData } from "~/root";
-import { Heading } from "~/components/Heading";
-import { BlogCard } from "~/components/BlogCard";
-import { contentful } from "~/services/contentful.server";
-import { getSocialMetas, getUrl } from "~/utils";
+import type { BlogPost, PageHandle } from "~/types.ts";
+import type { LoaderData as RootLoaderData } from "~/root.tsx";
+import { Heading } from "~/components/Heading.tsx";
+import { BlogCard } from "~/components/BlogCard.tsx";
+import { contentful } from "~/services/contentful.server.ts";
+import { getMetas, getUrl } from "~/utils/index.ts";
 
 const handleId = "blog";
 export const handle: PageHandle = {
@@ -16,14 +16,12 @@ export const handle: PageHandle = {
   getSitemapEntries: () => [{ route: `/blog`, priority: 0.7 }],
 };
 
-type LoaderData = {
-  blogPosts: Omit<BlogPost, "content">[];
-};
-
 export async function loader() {
   const {
     blogPostsCollection: { items: blogPosts },
-  } = await contentful(`{
+  } = await contentful<{
+    blogPostsCollection: { items: Omit<BlogPost, "content">[] };
+  }>(`{
     blogPostsCollection {
       items {
         title
@@ -44,27 +42,27 @@ export async function loader() {
     }
   }`);
 
-  return json<LoaderData>({
+  return json({
     blogPosts,
   });
 }
 
-export const meta: MetaFunction = ({ parentsData }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData;
-  return {
-    ...getSocialMetas({
-      title: "Blog | Fun Barber",
-      description: "Some cool blog posts about barber's world.",
-      keywords: "barber, barber shop, fun barber, blog",
-      url: getUrl(requestInfo),
-      origin: requestInfo?.origin ?? "",
-    }),
-  };
+export const meta: V2_MetaFunction<typeof loader, { root: RootLoaderData }> = ({
+  matches,
+}) => {
+  const requestInfo = matches.find((m) => m.id === "root")?.data.requestInfo;
+  return getMetas({
+    url: getUrl(requestInfo),
+    origin: requestInfo?.origin ?? "",
+    title: "Blog",
+    description: "Some cool blog posts about barber's world.",
+    keywords: "barber, barber shop, fun barber, blog",
+  });
 };
 
 export default function BlogPage() {
   const [filter, setFilter] = React.useState("");
-  const { blogPosts } = useLoaderData<LoaderData>();
+  const { blogPosts } = useLoaderData<typeof loader>();
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-10 py-12">
       <div className="flex w-full items-center justify-center gap-9">
@@ -104,7 +102,7 @@ export default function BlogPage() {
                 post.title.toLowerCase().match(filter.toLowerCase()) ||
                 filter
                   .split(" ")
-                  .reduce((acc, cur) => acc || post.tags.includes(cur), false)
+                  .reduce((acc, cur) => acc || post.tags.includes(cur), false),
             )
             .map((blogPost, i) => (
               <BlogCard key={blogPost.title} {...blogPost} delay={0.05 * i} />

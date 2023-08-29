@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import * as Icons from "~/components/Icons";
-import { useReducedMotion } from "~/utils";
+import * as Icons from "~/components/Icons.tsx";
+import { useReducedMotion } from "~/utils/index.ts";
 
 type ServiceCardProps = {
   title: string;

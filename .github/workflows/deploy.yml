@@ -111,6 +111,7 @@ jobs:
       - name: 🌳 Cypress run
         uses: cypress-io/github-action@v6
         with:
+          env: E2E=true
           start: npm run start:mocks
           wait-on: "http://localhost:8811"
         env:

@@ -1,7 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
-import type { BlogPost } from "~/types";
-import { contentful } from "~/services/contentful.server";
-import { getDomainUrl } from "~/utils";
+import type { BlogPost } from "~/types.ts";
+import { contentful } from "~/services/contentful.server.ts";
+import { getDomainUrl } from "~/utils/index.ts";
 
 export async function loader({ request }: LoaderArgs) {
   const {
@@ -36,13 +36,13 @@ export async function loader({ request }: LoaderArgs) {
             <item>
               <title>${cdata(post.title ?? "Untitled Post")}</title>
               <description>${cdata(
-                post.description ?? "This post is... indescribable"
+                post.description ?? "This post is... indescribable",
               )}</description>
               <pubDate>${post.sys.publishedAt.split("T")[0]}</pubDate>
               <link>${blogUrl}/${post.slug}</link>
               <guid>${blogUrl}/${post.slug}</guid>
             </item>
-          `.trim()
+          `.trim(),
           )
           .join("\n")}
       </channel>

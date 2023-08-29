@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import type { Barber } from "~/types";
-import { Heading } from "~/components/Heading";
-import { BarberCard } from "~/components/BarberCard";
-import { useReducedMotion } from "~/utils";
+import type { Barber } from "~/types.ts";
+import { Heading } from "~/components/Heading.tsx";
+import { BarberCard } from "~/components/BarberCard.tsx";
+import { useReducedMotion } from "~/utils/index.ts";
 
 export function Barbers({ barbers }: { barbers: Barber[] }) {
   const { duration } = useReducedMotion();

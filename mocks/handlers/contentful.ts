@@ -1,6 +1,6 @@
 import type { DefaultBodyType, MockedRequest, RestHandler } from "msw";
 import { rest } from "msw";
-import data from "../data/contentful.json";
+import data from "../data/contentful.ts";
 
 export const contentfulHandlers: Array<
   RestHandler<MockedRequest<DefaultBodyType>>
@@ -12,6 +12,6 @@ export const contentfulHandlers: Array<
         return res(ctx.json({ errors: [new Error("Unauthorized")] }));
       }
       return res(ctx.json({ data }));
-    }
+    },
   ),
 ];

@@ -1,8 +1,12 @@
 import type { EntryContext } from "@remix-run/node";
-import { isEqual } from "lodash";
-import type { BlogPost, PageHandle } from "~/types";
-import { getDomainUrl, removeTrailingSlash, typedBoolean } from "~/utils";
-import { contentful } from "~/services/contentful.server";
+import isEqual from "lodash/isEqual.js";
+import type { BlogPost, PageHandle } from "~/types.ts";
+import {
+  getDomainUrl,
+  removeTrailingSlash,
+  typedBoolean,
+} from "~/utils/index.ts";
+import { contentful } from "~/services/contentful.server.ts";
 
 type SitemapEntry = {
   route: string;
@@ -20,7 +24,7 @@ type SitemapEntry = {
 
 export async function getSitemapXml(
   request: Request,
-  remixContext: EntryContext
+  remixContext: EntryContext,
 ) {
   const domainUrl = getDomainUrl(request);
 
@@ -84,7 +88,7 @@ export async function getSitemapXml(
 
         const entry: SitemapEntry = { route: removeTrailingSlash(path) };
         return entry;
-      })
+      }),
     )
   )
     .flatMap((z) => z)
@@ -93,13 +97,13 @@ export async function getSitemapXml(
   const sitemapEntries: Array<SitemapEntry> = [];
   for (const entry of rawSitemapEntries) {
     const existingEntryForRoute = sitemapEntries.find(
-      (e) => e.route === entry.route
+      (e) => e.route === entry.route,
     );
     if (existingEntryForRoute) {
       if (!isEqual(existingEntryForRoute, entry)) {
         console.warn(
           `Duplicate route for ${entry.route} with different sitemap data`,
-          { entry, existingEntryForRoute }
+          { entry, existingEntryForRoute },
         );
       }
     } else {
@@ -126,7 +130,7 @@ export async function getSitemapXml(
       priority: 0.3,
       lastmod: post.sys.publishedAt,
       changefreq: "weekly",
-    })
+    }),
   );
 
   return `

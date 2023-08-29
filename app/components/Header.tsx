@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useLocation, useTransition } from "@remix-run/react";
+import { Link, useLocation, useNavigation } from "@remix-run/react";
 import clsx from "clsx";
 import {
   Menu,
@@ -11,9 +11,9 @@ import {
 } from "@reach/menu-button";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSpinDelay } from "spin-delay";
-import { Logo } from "~/components/Logo";
-import { Spinner } from "~/components/Spinner";
-import { useReducedMotion } from "~/utils";
+import { Logo } from "~/components/Logo.tsx";
+import { Spinner } from "~/components/Spinner.tsx";
+import { useReducedMotion } from "~/utils/index.ts";
 
 const links = [
   { name: "Home", to: "/" },
@@ -39,7 +39,7 @@ function NavLink({ to, children, ...rest }: Parameters<typeof Link>["0"]) {
           "text-lg outline-none hover:text-white/75 focus:text-white/75",
           {
             "text-brand": isSelected,
-          }
+          },
         )}
         to={to}
         {...rest}
@@ -104,8 +104,8 @@ function MobileMenu() {
 }
 
 export function Header() {
-  const transition = useTransition();
-  const showSpinner = useSpinDelay(transition.state !== "idle", {
+  const navigation = useNavigation();
+  const showSpinner = useSpinDelay(navigation.state !== "idle", {
     delay: 200,
     minDuration: 300,
   });

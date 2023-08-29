@@ -1,4 +1,4 @@
-import { startEndMonth } from "~/utils";
+import { startEndMonth } from "~/utils/index.ts";
 
 describe("startEndMonth", () => {
   it("should correct generate start and end date", () => {

@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 import { motion } from "framer-motion";
-import { Button } from "~/components/Button";
-import { useReducedMotion } from "~/utils";
+import { Button } from "~/components/Button.tsx";
+import { useReducedMotion } from "~/utils/index.ts";
 
 export function Hero() {
   const { duration } = useReducedMotion();

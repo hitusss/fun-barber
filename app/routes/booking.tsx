@@ -5,30 +5,25 @@ import {
   Link,
   useSearchParams,
 } from "@remix-run/react";
-import type { ActionArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
-import type { Service, Barber } from "~/types";
-import type { LoaderData as RootLoaderData } from "~/root";
-import { BookingCalendar } from "~/routes/resource/bookingCalendar";
-import { Select } from "~/components/Select";
-import { Input } from "~/components/Input";
-import { Button } from "~/components/Button";
-import { contentful } from "~/services/contentful.server";
-import { createBooking } from "~/models/booking.server";
+import type { Service, Barber } from "~/types.ts";
+import type { LoaderData as RootLoaderData } from "~/root.tsx";
+import { BookingCalendar } from "~/routes/resource+/bookingCalendar.tsx";
+import { Select } from "~/components/Select.tsx";
+import { Input } from "~/components/Input.tsx";
+import { Button } from "~/components/Button.tsx";
+import { contentful } from "~/services/contentful.server.ts";
+import { createBooking } from "~/models/booking.server.ts";
 import {
   getAllSearchParams,
-  getSocialMetas,
+  getMetas,
   getUrl,
   useForm,
   useReducedMotion,
-} from "~/utils";
-
-type LoaderData = {
-  barbers: Pick<Barber, "name">[];
-  services: Pick<Service, "name" | "price">[];
-};
+} from "~/utils/index.ts";
 
 const bookingSchema = z.object({
   barber: z.string(),
@@ -58,15 +53,15 @@ export async function action({ request }: ActionArgs) {
     validData.error.errors.map((e) =>
       e.path.forEach((p) => {
         if (fieldErrors[p]) {
-          fieldErrors[p].push(e.message);
+          fieldErrors[p]?.push(e.message);
         } else {
           fieldErrors[p] = [e.message];
         }
-      })
+      }),
     );
     return json(
       { ok: false, errors: { fieldErrors, formErrors: null } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -81,7 +76,7 @@ export async function action({ request }: ActionArgs) {
         ok: false,
         errors: { fieldErrors: null, formErrors: [errorMsg] },
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
@@ -90,7 +85,10 @@ export async function loader() {
   const {
     barbersCollection: { items: barbers },
     servicesCollection: { items: services },
-  } = await contentful(`{
+  } = await contentful<{
+    barbersCollection: { items: Pick<Barber, "name">[] };
+    servicesCollection: { items: Pick<Service, "name" | "price">[] };
+  }>(`{
     barbersCollection {
       items {
         name
@@ -104,28 +102,28 @@ export async function loader() {
     }
   }`);
 
-  return json<LoaderData>({
+  return json({
     barbers,
     services,
   });
 }
 
-export const meta: MetaFunction = ({ parentsData }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData;
-  return {
-    ...getSocialMetas({
-      title: "Booking | Fun Barber",
-      description: "Book your visit in our barber shop.",
-      keywords: "barber, barber shop, fun barber, booking",
-      origin: requestInfo?.origin ?? "",
-      url: getUrl(requestInfo),
-    }),
-  };
+export const meta: V2_MetaFunction<typeof loader, { root: RootLoaderData }> = ({
+  matches,
+}) => {
+  const requestInfo = matches.find((m) => m.id === "root")?.data.requestInfo;
+  return getMetas({
+    url: getUrl(requestInfo),
+    origin: requestInfo?.origin ?? "",
+    title: "Booking",
+    description: "Book your visit in our barber shop.",
+    keywords: "barber, barber shop, fun barber, booking",
+  });
 };
 
 export default function Booking() {
   const bookingFetcher = useFetcher();
-  const { barbers, services } = useLoaderData<LoaderData>();
+  const { barbers, services } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const { duration } = useReducedMotion();
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -137,10 +135,10 @@ export default function Booking() {
     errors: bookingFetcher.data?.errors,
   });
 
-  const barber = searchParams.get("barber") || barbers[0].name;
+  const barber = searchParams.get("barber") || barbers[0]?.name;
   const service =
     searchParams.get("service") ||
-    `${services[0].name} (${services[0].price}$)`;
+    `${services[0]?.name} (${services[0]?.price}$)`;
 
   const isSuccess = bookingFetcher?.data?.ok;
 
@@ -202,7 +200,7 @@ export default function Booking() {
               <div>
                 <Select
                   options={services.map(
-                    ({ name, price }) => `${name} (${price}$)`
+                    ({ name, price }) => `${name} (${price}$)`,
                   )}
                   defaultValue={service}
                   onChange={(e) =>
@@ -266,9 +264,9 @@ export default function Booking() {
             <Button
               className="my-4 px-16"
               type="submit"
-              disabled={Boolean(bookingFetcher.submission)}
+              disabled={bookingFetcher.state === "submitting"}
             >
-              {bookingFetcher.submission ? "Booking..." : "Book"}
+              {bookingFetcher.state === "submitting" ? "Booking..." : "Book"}
             </Button>
             {form.errors}
           </bookingFetcher.Form>

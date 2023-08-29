@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { InstagramIcon } from "~/components/Icons";
-import { useReducedMotion } from "~/utils";
+import { InstagramIcon } from "~/components/Icons.tsx";
+import { useReducedMotion } from "~/utils/index.ts";
 
 type BarberCardProp = {
   image: string;

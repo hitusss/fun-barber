@@ -1,4 +1,4 @@
-export async function contentful(query: string) {
+export async function contentful<T = any>(query: string): Promise<T> {
   const response = await fetch(
     `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`,
     {
@@ -8,7 +8,7 @@ export async function contentful(query: string) {
         Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
       },
       body: JSON.stringify({ query }),
-    }
+    },
   );
   const { data, errors } = await response.json();
   if (errors) {

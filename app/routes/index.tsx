@@ -1,25 +1,23 @@
 import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node";
-import type { Barber, Service, GalleryImage } from "~/types";
-import { Hero } from "~/components/sections/Hero";
-import { About } from "~/components/sections/About";
-import { Barbers } from "~/components/sections/Barbers";
-import { Services } from "~/components/sections/Services";
-import { Gallery } from "~/components/sections/Gallery";
-import { contentful } from "~/services/contentful.server";
-
-type LoaderData = {
-  barbers: Barber[];
-  services: Service[];
-  gallery: GalleryImage[];
-};
+import type { Barber, Service, GalleryImage } from "~/types.ts";
+import { Hero } from "~/components/sections/Hero.tsx";
+import { About } from "~/components/sections/About.tsx";
+import { Barbers } from "~/components/sections/Barbers.tsx";
+import { Services } from "~/components/sections/Services.tsx";
+import { Gallery } from "~/components/sections/Gallery.tsx";
+import { contentful } from "~/services/contentful.server.ts";
 
 export async function loader() {
   const {
     barbersCollection: { items: barbers },
     servicesCollection: { items: services },
     galleryCollection: { items: gallery },
-  } = await contentful(`{
+  } = await contentful<{
+    barbersCollection: { items: Barber[] };
+    servicesCollection: { items: Service[] };
+    galleryCollection: { items: GalleryImage[] };
+  }>(`{
     barbersCollection {
       items {
         name
@@ -49,7 +47,7 @@ export async function loader() {
     }
   }`);
 
-  return json<LoaderData>({
+  return json({
     barbers,
     services,
     gallery,
@@ -57,7 +55,7 @@ export async function loader() {
 }
 
 export default function Index() {
-  const { barbers, services, gallery } = useLoaderData<LoaderData>();
+  const { barbers, services, gallery } = useLoaderData<typeof loader>();
   return (
     <>
       <Hero />

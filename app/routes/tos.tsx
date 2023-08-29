@@ -1,4 +1,4 @@
-import { Heading } from "~/components/Heading";
+import { Heading } from "~/components/Heading.tsx";
 
 export default function TermsOfService() {
   return (

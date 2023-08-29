@@ -1,5 +1,5 @@
 import { setupServer } from "msw/node";
-import { contentfulHandlers } from "./handlers/contentful";
+import { contentfulHandlers } from "./handlers/contentful.ts";
 
 const server = setupServer(...contentfulHandlers);
 

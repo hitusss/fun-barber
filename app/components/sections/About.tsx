@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { Heading } from "~/components/Heading";
-import { useReducedMotion } from "~/utils";
+import { Heading } from "~/components/Heading.tsx";
+import { useReducedMotion } from "~/utils/index.ts";
 
 export function About() {
   const { duration } = useReducedMotion();

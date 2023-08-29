@@ -1,65 +1,61 @@
 import { PassThrough } from "stream";
-import { renderToPipeableStream } from "react-dom/server";
+import { Response, type HandleDocumentRequestFunction } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
-import { Response } from "@remix-run/node";
-import type { EntryContext, Headers } from "@remix-run/node";
 import isbot from "isbot";
-import { getSitemapXml } from "~/utils/sitemap.server";
+import { renderToPipeableStream } from "react-dom/server";
+import { makeTimings } from "~/utils/timing.server.ts";
 
 const ABORT_DELAY = 5000;
 
-export default async function handleRequest(
-  request: Request,
-  responseStatusCode: number,
-  responseHeaders: Headers,
-  remixContext: EntryContext
-) {
-  const url = new URL(request.url);
+type DocRequestArgs = Parameters<HandleDocumentRequestFunction>;
 
-  if (url.pathname === "/sitemap.xml") {
-    const sitemap = await getSitemapXml(request, remixContext);
-
-    if (sitemap)
-      return new Response(sitemap, {
-        headers: {
-          "Content-Type": "application/xml",
-          "Content-Length": String(Buffer.byteLength(sitemap)),
-        },
-      });
-  }
+export default async function handleRequest(...args: DocRequestArgs) {
+  const [request, responseStatusCode, responseHeaders, remixContext] = args;
+  responseHeaders.set("fly-region", process.env.FLY_REGION ?? "unknown");
+  responseHeaders.set("fly-app", process.env.FLY_APP_NAME ?? "unknown");
 
   const callbackName = isbot(request.headers.get("user-agent"))
     ? "onAllReady"
     : "onShellReady";
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     let didError = false;
+
+    const timings = makeTimings("render", "renderToPipeableStream");
 
     const { pipe, abort } = renderToPipeableStream(
       <RemixServer context={remixContext} url={request.url} />,
       {
-        [callbackName]() {
-          let body = new PassThrough();
-
+        [callbackName]: () => {
+          const body = new PassThrough();
           responseHeaders.set("Content-Type", "text/html");
-
+          responseHeaders.append("Server-Timing", timings.toString());
           resolve(
             new Response(body, {
-              status: didError ? 500 : responseStatusCode,
               headers: responseHeaders,
-            })
+              status: didError ? 500 : responseStatusCode,
+            }),
           );
           pipe(body);
         },
-        onShellError(err: unknown) {
+        onShellError: (err: unknown) => {
           reject(err);
         },
-        onError(error: unknown) {
+        onError: (error: unknown) => {
           didError = true;
+
           console.error(error);
         },
-      }
+      },
     );
+
     setTimeout(abort, ABORT_DELAY);
   });
+}
+
+export async function handleDataRequest(response: Response) {
+  response.headers.set("fly-region", process.env.FLY_REGION ?? "unknown");
+  response.headers.set("fly-app", process.env.FLY_APP_NAME ?? "unknown");
+
+  return response;
 }

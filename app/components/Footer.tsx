@@ -1,10 +1,10 @@
-import { Logo } from "~/components/Logo";
+import { Logo } from "~/components/Logo.tsx";
 import {
   InstagramIcon,
   TwitterIcon,
   FacebookIcon,
   RSSIcon,
-} from "~/components/Icons";
+} from "~/components/Icons.tsx";
 
 export function Footer() {
   return (

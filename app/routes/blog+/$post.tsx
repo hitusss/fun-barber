@@ -1,22 +1,24 @@
 import { useLoaderData } from "@remix-run/react";
-import type { LoaderArgs, MetaFunction } from "@remix-run/node";
+import type {
+  LoaderArgs,
+  SerializeFrom,
+  V2_MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { BlogPost } from "~/types";
-import type { LoaderData as RootLoaderData } from "~/root";
-import { TagWrapper, Tag } from "~/components/Tags";
-import { contentful } from "~/services/contentful.server";
-import { getSocialMetas, getUrl } from "~/utils";
-import { getGenericSocialImage } from "~/images";
-
-type LoaderData = {
-  blogPost: BlogPost;
-};
+import type { BlogPost } from "~/types.ts";
+import type { LoaderData as RootLoaderData } from "~/root.tsx";
+import { TagWrapper, Tag } from "~/components/Tags.tsx";
+import { contentful } from "~/services/contentful.server.ts";
+import { getMetas, getUrl } from "~/utils/index.ts";
+import { getGenericSocialImage } from "~/images.ts";
 
 export async function loader({ params }: LoaderArgs) {
   const {
     blogPostsCollection: { items: blogPost },
-  } = await contentful(`{
+  } = await contentful<{
+    blogPostsCollection: { items: BlogPost[] };
+  }>(`{
     blogPostsCollection(where: {
       slug: "${params.post}"
     }) {
@@ -41,31 +43,37 @@ export async function loader({ params }: LoaderArgs) {
     }
   }`);
 
-  return json<LoaderData>({
+  if (!blogPost[0]) {
+    throw new Error("Blog post not found");
+  }
+
+  return json({
     blogPost: blogPost[0],
   });
 }
 
-export const meta: MetaFunction = ({ data, parentsData }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData;
-  const title = `${data.blogPost.title} | Fun Barber`;
-  return {
-    ...getSocialMetas({
-      title,
-      description: data.blogPost.description,
-      keywords: data.blogPost.tags.join(", "),
-      origin: requestInfo?.origin ?? "",
-      url: getUrl(requestInfo),
-      image: getGenericSocialImage({
-        words: data.blogPost.title,
-        featuredImage: data.blogPost.heroImage.url,
-      }),
+export const meta: V2_MetaFunction<typeof loader, { root: RootLoaderData }> = ({
+  matches,
+  data,
+}) => {
+  const requestInfo = matches.find((m) => m.id === "root")?.data.requestInfo;
+  const { blogPost } = data as SerializeFrom<typeof loader>;
+
+  return getMetas({
+    origin: requestInfo?.origin ?? "",
+    url: getUrl(requestInfo),
+    title: blogPost.title,
+    description: blogPost.description,
+    keywords: blogPost.tags.join(", "),
+    image: getGenericSocialImage({
+      words: blogPost.title,
+      featuredImage: blogPost.heroImage.url,
     }),
-  };
+  });
 };
 
 export default function PostPage() {
-  const { blogPost } = useLoaderData<LoaderData>();
+  const { blogPost } = useLoaderData<typeof loader>();
   const content = blogPost.content.json as BlogPost["content"]["json"];
   return (
     <div className="mx-auto flex min-h-screen flex-col gap-28 py-12">

@@ -1,8 +1,8 @@
 import { Link } from "@remix-run/react";
 import { motion } from "framer-motion";
-import type { BlogPost } from "~/types";
-import { TagWrapper, Tag } from "~/components/Tags";
-import { useReducedMotion } from "~/utils";
+import type { BlogPost } from "~/types.ts";
+import { TagWrapper, Tag } from "~/components/Tags.tsx";
+import { useReducedMotion } from "~/utils/index.ts";
 
 type BlogCardProps = Omit<BlogPost, "content"> & {
   delay: number;

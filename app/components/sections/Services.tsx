@@ -1,10 +1,10 @@
 import { Link } from "@remix-run/react";
 import { motion } from "framer-motion";
-import type { Service } from "~/types";
-import { Heading } from "~/components/Heading";
-import { Button } from "~/components/Button";
-import { ServiceCard } from "~/components/ServiceCard";
-import { useReducedMotion } from "~/utils";
+import type { Service } from "~/types.ts";
+import { Heading } from "~/components/Heading.tsx";
+import { Button } from "~/components/Button.tsx";
+import { ServiceCard } from "~/components/ServiceCard.tsx";
+import { useReducedMotion } from "~/utils/index.ts";
 
 export function Services({ services }: { services: Service[] }) {
   const { duration } = useReducedMotion();

@@ -1,4 +1,8 @@
-import type { LinksFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type {
+  LinksFunction,
+  LoaderArgs,
+  V2_MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Link,
@@ -8,17 +12,18 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useCatch,
+  isRouteErrorResponse,
   useLoaderData,
-  useLocation,
+  useRouteError,
 } from "@remix-run/react";
+import { cssBundleHref } from "@remix-run/css-bundle";
 
-import { MainWrapper } from "~/components/MainWrapper";
-import { Header } from "~/components/Header";
-import { Footer } from "~/components/Footer";
-import { ErrorComponent } from "~/components/ErrorComponent";
-import { getDomainUrl, getSocialMetas, getUrl } from "~/utils";
-import { getEnv } from "~/utils/env.server";
+import { MainWrapper } from "~/components/MainWrapper.tsx";
+import { Header } from "~/components/Header.tsx";
+import { Footer } from "~/components/Footer.tsx";
+import { ErrorComponent } from "~/components/ErrorComponent.tsx";
+import { getDomainUrl, getMetas, getUrl } from "~/utils/index.ts";
+import { getEnv } from "~/utils/env.server.ts";
 
 import mainStylesheetUrl from "~/styles/main.css";
 import tailwindStylesheetUrl from "~/styles/tailwind.css";
@@ -53,31 +58,23 @@ export const links: LinksFunction = () => {
     { rel: "stylesheet", href: reachMenuButtonStylesheetUrl },
     { rel: "stylesheet", href: mainStylesheetUrl },
     { rel: "stylesheet", href: tailwindStylesheetUrl },
+    ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   ];
 };
 
-export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
-  const { requestInfo } = data;
-  return {
-    viewport: "width=device-width,initial-scale=1,viewport-fit=cover",
-    "theme-color": "#FFFEFE",
-    ...getSocialMetas({
-      origin: requestInfo?.origin ?? "",
-      url: getUrl(requestInfo),
-    }),
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  const requestInfo = data?.requestInfo;
+
+  return getMetas({
+    origin: requestInfo?.origin ?? "",
+    url: getUrl(requestInfo),
+  });
 };
 
-export type LoaderData = {
-  ENV: ReturnType<typeof getEnv>;
-  requestInfo: {
-    origin: string;
-    path: string;
-  };
-};
+export type LoaderData = typeof loader;
 
-export function loader({ request }: LoaderArgs) {
-  return json<LoaderData>({
+export async function loader({ request }: LoaderArgs) {
+  return json({
     ENV: getEnv(),
     requestInfo: {
       origin: getDomainUrl(request),
@@ -86,8 +83,7 @@ export function loader({ request }: LoaderArgs) {
   });
 }
 
-export default function App() {
-  const data = useLoaderData();
+export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full scroll-smooth">
       <head>
@@ -110,74 +106,66 @@ export default function App() {
           </a>
         </span>
         <Header />
-        <MainWrapper>
-          <Outlet />
-        </MainWrapper>
+        <MainWrapper>{children}</MainWrapper>
         <Footer />
         <ScrollRestoration />
         <Scripts />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
-          }}
-        />
         <LiveReload />
       </body>
     </html>
   );
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
-  console.error(error);
+export default function App() {
+  const data = useLoaderData();
   return (
-    <html lang="en" className="h-full scroll-smooth">
-      <head>
-        <title>Oh no...</title>
-        <Links />
-      </head>
-      <body className="bg-white font-serif text-paragraph text-white transition duration-500">
-        <MainWrapper className="flex flex-col items-center justify-center gap-6">
+    <AppLayout>
+      <Outlet />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
+        }}
+      />
+    </AppLayout>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <AppLayout>
+        <div className="flex flex-col items-center justify-center gap-6 py-12">
           <ErrorComponent size="large" className="max-w-screen-lg text-center">
-            500 - Oh no, something did not go well.
+            {error.status} - {error.data.message}
           </ErrorComponent>
           <Link to="/" className="text-blue-600 underline">
             Go Home
           </Link>
-        </MainWrapper>
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
-export function CatchBoundary() {
-  const caught = useCatch();
-  const location = useLocation();
-  console.error("CatchBoundary", caught);
-  if (caught.status === 404) {
-    return (
-      <html lang="en" className="h-full scroll-smooth">
-        <head>
-          <title>Oh no...</title>
-          <Links />
-        </head>
-        <body className="bg-white font-serif text-paragraph text-white transition duration-500">
-          <MainWrapper className="flex flex-col items-center justify-center gap-6">
-            <ErrorComponent
-              size="large"
-              className="max-w-screen-lg text-center"
-            >
-              404 - Oh no, you found a page that's missing stuff.
-            </ErrorComponent>
-            <p>{location.pathname} is not a valid page.</p>
-            <Link to="/" className="text-blue-600 underline">
-              Go Home
-            </Link>
-          </MainWrapper>
-          <Scripts />
-        </body>
-      </html>
+        </div>
+      </AppLayout>
     );
   }
-  throw new Error(`Unhandled error: ${caught.status}`);
+
+  let errorMessage = "Unknown error";
+  if (error instanceof Error) {
+    errorMessage = error.message;
+  }
+
+  return (
+    <AppLayout>
+      <div className="flex flex-col items-center justify-center gap-6 py-12">
+        <ErrorComponent size="large" className="max-w-screen-lg text-center">
+          Oh no, Something went wrong.
+        </ErrorComponent>
+        <ErrorComponent size="medium" className="max-w-screen-lg text-center">
+          {errorMessage}
+        </ErrorComponent>
+        <Link to="/" className="text-blue-600 underline">
+          Go Home
+        </Link>
+      </div>
+    </AppLayout>
+  );
 }

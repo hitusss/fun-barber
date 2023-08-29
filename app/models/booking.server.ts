@@ -1,13 +1,13 @@
 import moment from "moment";
-import { prisma } from "~/services/db.server";
-import { startEndMonth } from "~/utils";
+import { prisma } from "~/services/db.server.ts";
+import { startEndMonth } from "~/utils/index.ts";
 
 export type { Booking } from "@prisma/client";
 
 export async function getBookings(
   barber: string,
   month: number,
-  year?: number
+  year?: number,
 ) {
   const { startDate, endDate } = startEndMonth(month, year);
 

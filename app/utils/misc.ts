@@ -14,7 +14,7 @@ export function removeTrailingSlash(s: string) {
 
 export function getUrl(requestInfo?: { origin: string; path: string }) {
 	return removeTrailingSlash(
-		`${requestInfo?.origin ?? 'https://kentcdodds.com'}${
+		`${requestInfo?.origin ?? 'https://funbarber.hitus.me'}${
 			requestInfo?.path ?? ''
 		}`,
 	)

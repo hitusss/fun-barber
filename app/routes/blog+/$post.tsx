@@ -77,28 +77,10 @@ export default function PostPage() {
 	const { blogPost } = useLoaderData<typeof loader>()
 	const content = blogPost.content.json as BlogPost['content']['json']
 	return (
-		<div className="mx-auto flex min-h-screen flex-col gap-28 py-12">
-			<div className="relative">
-				<figure>
-					<picture>
-						<source
-							srcSet={`${blogPost.heroImage.url}?w=1280&h=1280&fm=webp`}
-							type="image/webp"
-						/>
-						<source
-							srcSet={`${blogPost.heroImage.url}?w=1280&h=1280&fm=jpg`}
-							type="image/jpeg"
-						/>
-						<img
-							src={`${blogPost.heroImage.url}?w=1280&h=1280&fm=jpg`}
-							alt=""
-							className="h-[60vh] w-full object-cover "
-						/>
-					</picture>
-				</figure>
-				<span className="absolute inset-0 h-full w-full bg-gradient-to-t from-black to-transparent" />
-				<div className="absolute inset-x-0 bottom-0 mx-auto flex w-full max-w-screen-xl translate-y-20 flex-col gap-2 px-4 lg:px-0">
-					<h1 className="text-heading2 font-bold text-brand shadow-lg">
+		<div className=" mx-auto flex min-h-screen max-w-prose flex-col gap-28 py-12">
+			<div className="flex flex-col gap-6">
+				<div className="flex w-full flex-col gap-2 px-4 lg:px-0">
+					<h1 className="text-heading2 font-bold text-brand drop-shadow-lg">
 						{blogPost.title}
 					</h1>
 					<div className="flex items-center gap-2 text-base">
@@ -126,7 +108,21 @@ export default function PostPage() {
 							</p>
 						</div>
 					</div>
-
+					<picture>
+						<source
+							srcSet={`${blogPost.heroImage.url}?w=1280&h=1280&fm=webp`}
+							type="image/webp"
+						/>
+						<source
+							srcSet={`${blogPost.heroImage.url}?w=1280&h=1280&fm=jpg`}
+							type="image/jpeg"
+						/>
+						<img
+							src={`${blogPost.heroImage.url}?w=1280&h=1280&fm=jpg`}
+							alt=""
+							className="h-[50vh] w-full rounded-md object-cover object-center"
+						/>
+					</picture>
 					<TagWrapper>
 						{blogPost.tags.map(tag => (
 							<Tag key={tag}>{tag}</Tag>
@@ -134,8 +130,8 @@ export default function PostPage() {
 					</TagWrapper>
 				</div>
 			</div>
-			<div
-				className="mx-auto max-w-screen-xl px-4 text-base lg:px-0"
+			<article
+				className="text-base"
 				dangerouslySetInnerHTML={{
 					__html: documentToHtmlString(content),
 				}}

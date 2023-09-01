@@ -131,7 +131,7 @@ export default function PostPage() {
 				</div>
 			</div>
 			<article
-				className="text-base"
+				className="prose-default prose mx-auto break-words"
 				dangerouslySetInnerHTML={{
 					__html: documentToHtmlString(content),
 				}}

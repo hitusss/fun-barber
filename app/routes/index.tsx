@@ -1,7 +1,7 @@
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import type { Barber, GalleryImage, Service } from '~/types.ts'
 
+import type { Barber, GalleryImage, Service } from '~/types.ts'
 import { contentful } from '~/services/contentful.server.ts'
 import { About } from '~/components/sections/About.tsx'
 import { Barbers } from '~/components/sections/Barbers.tsx'

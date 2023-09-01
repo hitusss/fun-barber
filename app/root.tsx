@@ -1,4 +1,3 @@
-import reachMenuButtonStylesheetUrl from '@reach/menu-button/styles.css'
 import { cssBundleHref } from '@remix-run/css-bundle'
 import type {
 	LinksFunction,
@@ -18,6 +17,7 @@ import {
 	useLoaderData,
 	useRouteError,
 } from '@remix-run/react'
+import reachMenuButtonStylesheetUrl from '@reach/menu-button/styles.css'
 
 import { ErrorComponent } from '~/components/ErrorComponent.tsx'
 import { Footer } from '~/components/Footer.tsx'

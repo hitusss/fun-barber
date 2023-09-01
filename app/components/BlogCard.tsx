@@ -1,7 +1,7 @@
 import { Link } from '@remix-run/react'
-import type { BlogPost } from '~/types.ts'
 import { motion } from 'framer-motion'
 
+import type { BlogPost } from '~/types.ts'
 import { Tag, TagWrapper } from '~/components/Tags.tsx'
 import { useReducedMotion } from '~/utils/index.ts'
 

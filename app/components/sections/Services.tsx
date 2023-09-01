@@ -1,7 +1,7 @@
 import { Link } from '@remix-run/react'
-import type { Service } from '~/types.ts'
 import { motion } from 'framer-motion'
 
+import type { Service } from '~/types.ts'
 import { Button } from '~/components/Button.tsx'
 import { Heading } from '~/components/Heading.tsx'
 import { ServiceCard } from '~/components/ServiceCard.tsx'

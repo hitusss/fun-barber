@@ -1,5 +1,4 @@
 import type { GalleryImage } from '~/types.tsx'
-
 import { Heading } from '~/components/Heading.tsx'
 
 export function Gallery({ gallery }: { gallery: GalleryImage[] }) {

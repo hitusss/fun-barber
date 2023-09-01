@@ -7,11 +7,10 @@ import {
 	useLoaderData,
 	useSearchParams,
 } from '@remix-run/react'
-import type { LoaderData as RootLoaderData } from '~/root.tsx'
-import type { Barber, Service } from '~/types.ts'
 import { AnimatePresence, motion } from 'framer-motion'
 import { z } from 'zod'
 
+import type { Barber, Service } from '~/types.ts'
 import { createBooking } from '~/models/booking.server.ts'
 import { contentful } from '~/services/contentful.server.ts'
 import { BookingCalendar } from '~/routes/resource+/bookingCalendar.tsx'
@@ -25,6 +24,7 @@ import {
 	useForm,
 	useReducedMotion,
 } from '~/utils/index.ts'
+import type { LoaderData as RootLoaderData } from '~/root.tsx'
 
 const bookingSchema = z.object({
 	barber: z.string(),

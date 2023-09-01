@@ -1,6 +1,6 @@
-import type { Barber } from '~/types.ts'
 import { motion } from 'framer-motion'
 
+import type { Barber } from '~/types.ts'
 import { BarberCard } from '~/components/BarberCard.tsx'
 import { Heading } from '~/components/Heading.tsx'
 import { useReducedMotion } from '~/utils/index.ts'

@@ -1,7 +1,7 @@
 import type { EntryContext } from '@remix-run/node'
-import type { BlogPost, PageHandle } from '~/types.ts'
 import isEqual from 'lodash/isEqual.js'
 
+import type { BlogPost, PageHandle } from '~/types.ts'
 import { contentful } from '~/services/contentful.server.ts'
 import {
 	getDomainUrl,

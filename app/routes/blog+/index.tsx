@@ -2,14 +2,14 @@ import * as React from 'react'
 import type { V2_MetaFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import type { LoaderData as RootLoaderData } from '~/root.tsx'
-import type { BlogPost, PageHandle } from '~/types.ts'
 import { AnimatePresence } from 'framer-motion'
 
+import type { BlogPost, PageHandle } from '~/types.ts'
 import { contentful } from '~/services/contentful.server.ts'
 import { BlogCard } from '~/components/BlogCard.tsx'
 import { Heading } from '~/components/Heading.tsx'
 import { getMetas, getUrl } from '~/utils/index.ts'
+import type { LoaderData as RootLoaderData } from '~/root.tsx'
 
 const handleId = 'blog'
 export const handle: PageHandle = {

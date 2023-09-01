@@ -1,4 +1,3 @@
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import type {
 	LoaderArgs,
 	SerializeFrom,
@@ -6,13 +5,14 @@ import type {
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { getGenericSocialImage } from '~/images.ts'
-import type { LoaderData as RootLoaderData } from '~/root.tsx'
-import type { BlogPost } from '~/types.ts'
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 
+import type { BlogPost } from '~/types.ts'
 import { contentful } from '~/services/contentful.server.ts'
 import { Tag, TagWrapper } from '~/components/Tags.tsx'
 import { getMetas, getUrl } from '~/utils/index.ts'
+import { getGenericSocialImage } from '~/images.ts'
+import type { LoaderData as RootLoaderData } from '~/root.tsx'
 
 export async function loader({ params }: LoaderArgs) {
 	const {
@@ -131,7 +131,7 @@ export default function PostPage() {
 				</div>
 			</div>
 			<article
-				className="prose-default prose mx-auto break-words"
+				className="prose prose-default mx-auto break-words"
 				dangerouslySetInnerHTML={{
 					__html: documentToHtmlString(content),
 				}}

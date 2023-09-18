@@ -7,6 +7,8 @@ import {
 	useLoaderData,
 	useSearchParams,
 } from '@remix-run/react'
+import { conform, useForm } from '@conform-to/react'
+import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { AnimatePresence, motion } from 'framer-motion'
 import { z } from 'zod'
 
@@ -15,13 +17,13 @@ import { createBooking } from '~/models/booking.server.ts'
 import { contentful } from '~/services/contentful.server.ts'
 import { BookingCalendar } from '~/routes/resource+/bookingCalendar.tsx'
 import { Button } from '~/components/Button.tsx'
+import { ErrorList } from '~/components/Form.tsx'
 import { Input } from '~/components/Input.tsx'
 import { Select } from '~/components/Select.tsx'
 import {
 	getAllSearchParams,
 	getMetas,
 	getUrl,
-	useForm,
 	useReducedMotion,
 } from '~/utils/index.ts'
 import type { LoaderData as RootLoaderData } from '~/root.tsx'
@@ -46,37 +48,24 @@ const bookingSchema = z.object({
 
 export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData()
-	const dataObj = Object.fromEntries(formData)
+	const submission = parse(formData, { schema: bookingSchema })
 
-	const validData = bookingSchema.safeParse(dataObj)
-	if (!validData.success) {
-		const fieldErrors: Record<string, string[]> = {}
-		validData.error.errors.map(e =>
-			e.path.forEach(p => {
-				if (fieldErrors[p]) {
-					fieldErrors[p]?.push(e.message)
-				} else {
-					fieldErrors[p] = [e.message]
-				}
-			}),
-		)
-		return json(
-			{ ok: false, errors: { fieldErrors, formErrors: null } },
-			{ status: 400 },
-		)
+	if (submission.intent !== 'submit' || !submission.value) {
+		return json({ ok: false, error: null, submission } as const)
 	}
 
 	try {
-		const result = await createBooking(validData.data)
-		return json({ ...result, ok: true })
+		await createBooking(submission.value)
+		return json({ ok: true, error: null, submission } as const)
 	} catch (error) {
 		const errorMsg =
 			error instanceof Error ? error.message : JSON.stringify(error)
 		return json(
 			{
 				ok: false,
-				errors: { fieldErrors: null, formErrors: [errorMsg] },
-			},
+				error: errorMsg,
+				submission,
+			} as const,
 			{ status: 400 },
 		)
 	}
@@ -127,13 +116,15 @@ export default function Booking() {
 	const { barbers, services } = useLoaderData<typeof loader>()
 	const [searchParams, setSearchParams] = useSearchParams()
 	const { duration } = useReducedMotion()
-	const formRef = React.useRef<HTMLFormElement>(null)
 	const successRef = React.useRef<HTMLHeadingElement>(null)
-	const { form, fields } = useForm({
-		name: 'booking',
-		formRef,
-		schema: bookingSchema,
-		errors: bookingFetcher.data?.errors,
+	const [form, fields] = useForm({
+		id: 'booking',
+		lastSubmission: bookingFetcher.data?.submission,
+		constraint: getFieldsetConstraint(bookingSchema),
+		onValidate({ formData }) {
+			return parse(formData, { schema: bookingSchema })
+		},
+		shouldValidate: 'onBlur',
 	})
 
 	const barber = searchParams.get('barber') || barbers[0]?.name
@@ -194,9 +185,12 @@ export default function Booking() {
 									}
 									label="Barber"
 									required
-									{...fields.barber.props}
+									{...conform.select(fields.barber)}
 								/>
-								{fields.barber.errors}
+								<ErrorList
+									id={fields.barber?.errorId}
+									errors={fields.barber?.errors}
+								/>
 							</div>
 							<div>
 								<Select
@@ -212,9 +206,12 @@ export default function Booking() {
 									}
 									label="Service"
 									required
-									{...fields.service.props}
+									{...conform.select(fields.service)}
 								/>
-								{fields.service.errors}
+								<ErrorList
+									id={fields.service?.errorId}
+									errors={fields.service?.errors}
+								/>
 							</div>
 						</fieldset>
 						<BookingCalendar barber={barber} />
@@ -223,45 +220,63 @@ export default function Booking() {
 								<Input
 									label="First name"
 									required
-									{...fields.firstName.props}
+									{...conform.input(fields.firstName, { type: 'text' })}
 								/>
-								{fields.firstName.errors}
+								<ErrorList
+									id={fields.firstName?.errorId}
+									errors={fields.firstName?.errors}
+								/>
 							</div>
 							<div>
-								<Input label="Last name" required {...fields.lastName.props} />
-								{fields.lastName.errors}
+								<Input
+									label="Last name"
+									required
+									{...conform.input(fields.lastName, { type: 'text' })}
+								/>
+								<ErrorList
+									id={fields.lastName?.errorId}
+									errors={fields.lastName?.errors}
+								/>
 							</div>
 							<div>
 								<Input
 									label="Email"
-									type="email"
 									required
-									{...fields.email.props}
+									{...conform.input(fields.email, { type: 'email' })}
 								/>
-								{fields.email.errors}
+								<ErrorList
+									id={fields.email?.errorId}
+									errors={fields.email?.errors}
+								/>
 							</div>
 							<div>
 								<Input
 									label="Phone"
-									type="tel"
 									required
-									{...fields.phone.props}
+									{...conform.input(fields.phone, { type: 'tel' })}
 								/>
-								{fields.phone.errors}
+								<ErrorList
+									id={fields.phone?.errorId}
+									errors={fields.phone?.errors}
+								/>
 							</div>
 						</fieldset>
 						<label className="flex items-center gap-2 text-sm">
 							<input
-								type="checkbox"
-								value="privacyPolicy"
-								{...fields.privacyPolicy.props}
+								{...conform.input(fields.privacyPolicy, {
+									type: 'checkbox',
+									value: 'privacyPolicy',
+								})}
 							/>{' '}
 							I accept the{' '}
 							<Link to="/privacy" className="text-blue-600 underline">
 								Privacy Policy
 							</Link>
 						</label>
-						{fields.privacyPolicy.errors}
+						<ErrorList
+							id={fields.privacyPolicy?.errorId}
+							errors={fields.privacyPolicy?.errors}
+						/>
 						<Button
 							className="my-4 px-16"
 							type="submit"
@@ -269,7 +284,10 @@ export default function Booking() {
 						>
 							{bookingFetcher.state === 'submitting' ? 'Booking...' : 'Book'}
 						</Button>
-						{form.errors}
+						<ErrorList
+							id={form.errorId}
+							errors={[...form.errors, bookingFetcher.data?.error]}
+						/>
 					</bookingFetcher.Form>
 				</motion.div>
 

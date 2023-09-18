@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type { ActionArgs, V2_MetaFunction } from '@remix-run/node'
+import type { ActionFunctionArgs, MetaFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import {
 	Link,
@@ -44,7 +44,7 @@ const bookingSchema = z.object({
 	}),
 })
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData()
 	const dataObj = Object.fromEntries(formData)
 
@@ -109,7 +109,7 @@ export async function loader() {
 	})
 }
 
-export const meta: V2_MetaFunction<typeof loader, { root: RootLoaderData }> = ({
+export const meta: MetaFunction<typeof loader, { root: RootLoaderData }> = ({
 	matches,
 }) => {
 	const requestInfo = matches.find(m => m.id === 'root')?.data.requestInfo
@@ -123,7 +123,7 @@ export const meta: V2_MetaFunction<typeof loader, { root: RootLoaderData }> = ({
 }
 
 export default function Booking() {
-	const bookingFetcher = useFetcher()
+	const bookingFetcher = useFetcher<typeof action>()
 	const { barbers, services } = useLoaderData<typeof loader>()
 	const [searchParams, setSearchParams] = useSearchParams()
 	const { duration } = useReducedMotion()

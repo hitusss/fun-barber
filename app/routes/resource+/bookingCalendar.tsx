@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type { LoaderArgs, SerializeFrom } from '@remix-run/node'
+import type { DataFunctionArgs, SerializeFrom } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { useFetcher, useSearchParams } from '@remix-run/react'
 import moment from 'moment'
@@ -11,7 +11,7 @@ import { RadioButton } from '~/components/RadioButton.tsx'
 import { Spinner } from '~/components/Spinner.tsx'
 import { getAllSearchParams } from '~/utils/index.ts'
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: DataFunctionArgs) {
 	const url = new URL(request.url)
 	const barber = url.searchParams.get('barber')
 	const month = Number(url.searchParams.get('month'))

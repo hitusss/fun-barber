@@ -1,8 +1,8 @@
 import { cssBundleHref } from '@remix-run/css-bundle'
 import type {
+	DataFunctionArgs,
 	LinksFunction,
-	LoaderArgs,
-	V2_MetaFunction,
+	MetaFunction,
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import {
@@ -14,7 +14,6 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useLoaderData,
 	useRouteError,
 } from '@remix-run/react'
 import reachMenuButtonStylesheetUrl from '@reach/menu-button/styles.css'
@@ -23,7 +22,6 @@ import { ErrorComponent } from '~/components/ErrorComponent.tsx'
 import { Footer } from '~/components/Footer.tsx'
 import { Header } from '~/components/Header.tsx'
 import { MainWrapper } from '~/components/MainWrapper.tsx'
-import { getEnv } from '~/utils/env.server.ts'
 import { getDomainUrl, getMetas, getUrl } from '~/utils/index.ts'
 import mainStylesheetUrl from '~/styles/main.css'
 import noScriptStylesheetUrl from '~/styles/no-script.css'
@@ -61,7 +59,7 @@ export const links: LinksFunction = () => {
 	]
 }
 
-export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const requestInfo = data?.requestInfo
 
 	return getMetas({
@@ -72,9 +70,8 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 
 export type LoaderData = typeof loader
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: DataFunctionArgs) {
 	return json({
-		ENV: getEnv(),
 		requestInfo: {
 			origin: getDomainUrl(request),
 			path: new URL(request.url).pathname,
@@ -116,15 +113,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-	const data = useLoaderData()
 	return (
 		<AppLayout>
 			<Outlet />
-			<script
-				dangerouslySetInnerHTML={{
-					__html: `window.ENV = ${JSON.stringify(data.ENV)};`,
-				}}
-			/>
 		</AppLayout>
 	)
 }

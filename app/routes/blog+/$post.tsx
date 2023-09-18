@@ -1,7 +1,7 @@
 import type {
-	LoaderArgs,
+	DataFunctionArgs,
+	MetaFunction,
 	SerializeFrom,
-	V2_MetaFunction,
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
@@ -14,7 +14,7 @@ import { getMetas, getUrl } from '~/utils/index.ts'
 import { getGenericSocialImage } from '~/images.ts'
 import type { LoaderData as RootLoaderData } from '~/root.tsx'
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params }: DataFunctionArgs) {
 	const {
 		blogPostsCollection: { items: blogPost },
 	} = await contentful<{
@@ -53,7 +53,7 @@ export async function loader({ params }: LoaderArgs) {
 	})
 }
 
-export const meta: V2_MetaFunction<typeof loader, { root: RootLoaderData }> = ({
+export const meta: MetaFunction<typeof loader, { root: RootLoaderData }> = ({
 	matches,
 	data,
 }) => {

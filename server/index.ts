@@ -9,7 +9,6 @@ import {
 } from '@remix-run/node'
 import address from 'address'
 import chalk from 'chalk'
-import chokidar from 'chokidar'
 import closeWithGrace from 'close-with-grace'
 import compression from 'compression'
 import express from 'express'
@@ -18,17 +17,18 @@ import getPort, { portNumbers } from 'get-port'
 import helmet from 'helmet'
 import morgan from 'morgan'
 
-// @ts-ignore - this file may not exist if you haven't built yet, but it will
-// definitely exist by the time the dev or prod server actually runs.
-import * as remixBuild from '../build/index.js'
-
 installGlobals()
 
 const MODE = process.env.NODE_ENV
 
 const BUILD_PATH = '../build/index.js'
+const WATCH_PATH = '../build/version.txt'
 
-const build = remixBuild as unknown as ServerBuild
+/**
+ * Initial build
+ * @type {ServerBuild}
+ */
+const build = await import(BUILD_PATH)
 let devBuild = build
 
 const app = express()
@@ -225,8 +225,13 @@ if (MODE === 'development') {
 		broadcastDevReady(devBuild)
 	}
 
+	const chokidar = await import('chokidar')
+
 	const dirname = path.dirname(fileURLToPath(import.meta.url))
-	const watchPath = path.join(dirname, BUILD_PATH).replace(/\\/g, '/')
-	const watcher = chokidar.watch(watchPath, { ignoreInitial: true })
-	watcher.on('all', reloadBuild)
+	const watchPath = path.join(dirname, WATCH_PATH).replace(/\\/g, '/')
+
+	chokidar
+		.watch(watchPath, { ignoreInitial: true })
+		.on('add', reloadBuild)
+		.on('change', reloadBuild)
 }

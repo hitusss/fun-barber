@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type { V2_MetaFunction } from '@remix-run/node'
+import type { MetaFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { AnimatePresence } from 'framer-motion'
@@ -48,7 +48,7 @@ export async function loader() {
 	})
 }
 
-export const meta: V2_MetaFunction<typeof loader, { root: RootLoaderData }> = ({
+export const meta: MetaFunction<typeof loader, { root: RootLoaderData }> = ({
 	matches,
 }) => {
 	const requestInfo = matches.find(m => m.id === 'root')?.data.requestInfo

@@ -1,10 +1,10 @@
-import type { LoaderArgs } from '@remix-run/node'
+import type { DataFunctionArgs } from '@remix-run/node'
 
 import type { BlogPost } from '~/types.ts'
 import { contentful } from '~/services/contentful.server.ts'
 import { getDomainUrl } from '~/utils/index.ts'
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: DataFunctionArgs) {
 	const {
 		blogPostsCollection: { items: blogPosts },
 	} = await contentful(`{

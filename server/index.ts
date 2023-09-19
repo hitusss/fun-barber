@@ -100,7 +100,7 @@ app.use(
 				'connect-src': [MODE === 'development' ? 'ws:' : null, "'self'"].filter(
 					Boolean,
 				),
-				'font-src': ["'self'"],
+				'font-src': ["'self'", 'fonts.gstatic.com'],
 				'frame-src': ["'self'"],
 				'img-src': ["'self'", 'data:', 'images.ctfassets.net'],
 				'script-src': [

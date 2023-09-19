@@ -97,7 +97,9 @@ app.use(
 			// NOTE: Remove reportOnly when you're ready to enforce this CSP
 			reportOnly: true,
 			directives: {
-				'connect-src': MODE === 'development' ? 'ws:' : "'self'",
+				'connect-src': [MODE === 'development' ? 'ws:' : null, "'self'"].filter(
+					Boolean,
+				),
 				'font-src': ["'self'"],
 				'frame-src': ["'self'"],
 				'img-src': ["'self'", 'data:'],

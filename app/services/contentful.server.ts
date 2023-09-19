@@ -10,7 +10,7 @@ export async function contentful<T = any>(query: string): Promise<T> {
 			body: JSON.stringify({ query }),
 		},
 	)
-	const { data, errors } = await response.json()
+	const { data, errors } = (await response.json()) as { data: any; errors: any }
 	if (errors) {
 		throw errors
 	}

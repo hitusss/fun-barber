@@ -102,7 +102,7 @@ app.use(
 				),
 				'font-src': ["'self'"],
 				'frame-src': ["'self'"],
-				'img-src': ["'self'", 'data:'],
+				'img-src': ["'self'", 'data:', 'images.ctfassets.net'],
 				'script-src': [
 					"'strict-dynamic'",
 					"'self'",

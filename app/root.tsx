@@ -23,6 +23,7 @@ import { Footer } from '~/components/Footer.tsx'
 import { Header } from '~/components/Header.tsx'
 import { MainWrapper } from '~/components/MainWrapper.tsx'
 import { getDomainUrl, getMetas, getUrl } from '~/utils/index.ts'
+import { useNonce } from '~/utils/nonce-provider.ts'
 import mainStylesheetUrl from '~/styles/main.css'
 import noScriptStylesheetUrl from '~/styles/no-script.css'
 import tailwindStylesheetUrl from '~/styles/tailwind.css'
@@ -79,7 +80,13 @@ export async function loader({ request }: DataFunctionArgs) {
 	})
 }
 
-export function AppLayout({ children }: { children: React.ReactNode }) {
+export function AppLayout({
+	children,
+	nonce,
+}: {
+	children: React.ReactNode
+	nonce: string
+}) {
 	return (
 		<html lang="en" className="h-full scroll-smooth">
 			<head>
@@ -104,17 +111,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 				<Header />
 				<MainWrapper>{children}</MainWrapper>
 				<Footer />
-				<ScrollRestoration />
-				<Scripts />
-				<LiveReload />
+				<ScrollRestoration nonce={nonce} />
+				<Scripts nonce={nonce} />
+				<LiveReload nonce={nonce} />
 			</body>
 		</html>
 	)
 }
 
 export default function App() {
+	const nonce = useNonce()
 	return (
-		<AppLayout>
+		<AppLayout nonce={nonce}>
 			<Outlet />
 		</AppLayout>
 	)
@@ -122,10 +130,11 @@ export default function App() {
 
 export function ErrorBoundary() {
 	const error = useRouteError()
+	const nonce = useNonce()
 
 	if (isRouteErrorResponse(error)) {
 		return (
-			<AppLayout>
+			<AppLayout nonce={nonce}>
 				<div className="flex flex-col items-center justify-center gap-6 py-12">
 					<ErrorComponent size="large" className="max-w-screen-lg text-center">
 						{error.status} - {error.data.message}
@@ -144,7 +153,7 @@ export function ErrorBoundary() {
 	}
 
 	return (
-		<AppLayout>
+		<AppLayout nonce={nonce}>
 			<div className="flex flex-col items-center justify-center gap-6 py-12">
 				<ErrorComponent size="large" className="max-w-screen-lg text-center">
 					Oh no, Something went wrong.

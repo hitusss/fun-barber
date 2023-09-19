@@ -7,6 +7,7 @@ import { RemixServer } from '@remix-run/react'
 import isbot from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'
 
+import { NonceProvider } from '~/utils/nonce-provider.ts'
 import { makeTimings } from '~/utils/timing.server.ts'
 
 import { getSitemapXml } from './utils/sitemap.server.ts'
@@ -16,7 +17,13 @@ const ABORT_DELAY = 5000
 type DocRequestArgs = Parameters<HandleDocumentRequestFunction>
 
 export default async function handleRequest(...args: DocRequestArgs) {
-	const [request, responseStatusCode, responseHeaders, remixContext] = args
+	const [
+		request,
+		responseStatusCode,
+		responseHeaders,
+		remixContext,
+		loadContext,
+	] = args
 	responseHeaders.set('fly-region', process.env.FLY_REGION ?? 'unknown')
 	responseHeaders.set('fly-app', process.env.FLY_APP_NAME ?? 'unknown')
 
@@ -34,6 +41,7 @@ export default async function handleRequest(...args: DocRequestArgs) {
 			})
 	}
 
+	const nonce = String(loadContext.cspNonce) ?? undefined
 	const callbackName = isbot(request.headers.get('user-agent'))
 		? 'onAllReady'
 		: 'onShellReady'
@@ -44,7 +52,9 @@ export default async function handleRequest(...args: DocRequestArgs) {
 		const timings = makeTimings('render', 'renderToPipeableStream')
 
 		const { pipe, abort } = renderToPipeableStream(
-			<RemixServer context={remixContext} url={request.url} />,
+			<NonceProvider value={nonce}>
+				<RemixServer context={remixContext} url={request.url} />
+			</NonceProvider>,
 			{
 				[callbackName]: () => {
 					const body = new PassThrough()

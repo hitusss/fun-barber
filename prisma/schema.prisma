@@ -8,22 +8,22 @@ generator client {
 }
 
 model Booking {
-  id    String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  date  DateTime
+  date DateTime
 
-  hour   String
+  hour String
 
   barber String
-  
+
   service String
 
-  firstName   String
-  lastName   String
-  phone  String
-  email  String
+  firstName String
+  lastName  String
+  phone     String
+  email     String
 
   @@unique([barber, date, hour])
 }

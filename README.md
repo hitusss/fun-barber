@@ -10,9 +10,10 @@
 [license]: https://github.com/hitusss/fun-barber/blob/main/LICENSE
 <!-- prettier-ignore-end -->
 
-This web application allows hairdressers to showcase their services and staff.
-It also provides an easy booking system. There is also a blog to inform
-customers about the latest trends and news in the hairdressing world.
+A barbershop web application featuring intuitive booking functionality and an 
+engaging blog platform. Designed to streamline the scheduling process for clients, 
+the app allows users to conveniently book appointments with their preferred barber 
+online, selecting desired services and available time slots.
 
 ## Table of Contents
 

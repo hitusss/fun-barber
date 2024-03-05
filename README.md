@@ -25,7 +25,7 @@ online, selecting desired services and available time slots.
 
 ## Live Preview
 
-You can check out a live preview of the App at https://funbarber.hitus.me.
+You can check out a live preview of the App at https://fun-barber-5bdf.fly.dev
 
 ## Get Started
 
